@@ -1,0 +1,97 @@
+NORMA OFICIAL MEXICANA NOM-035-STPS-2018 (MODIFICACIÓN 2026)
+FACTORES DE RIESGO PSICOSOCIAL EN EL TRABAJO — IDENTIFICACIÓN, ANÁLISIS Y PREVENCIÓN
+
+Publicada en el Diario Oficial de la Federación el 23 de octubre de 2018
+Última reforma: 28 de enero de 2026
+
+CAPÍTULO I — DISPOSICIONES GENERALES
+
+Artículo 1. Objetivo
+La presente Norma tiene por objetivo establecer los elementos para identificar, analizar y prevenir los factores de riesgo psicosocial, así como para promover un entorno organizacional favorable en los centros de trabajo, incluyendo la evaluación de riesgos emergentes asociados al trabajo remoto y modalidades híbridas.
+
+Artículo 2. Campo de aplicación
+Esta Norma rige en todo el territorio nacional y aplica en todos los centros de trabajo, incluyendo aquellos que operen bajo esquemas de trabajo remoto, híbrido o de plataformas digitales.
+
+Artículo 3. Definiciones
+Para efectos de la presente Norma se entiende por:
+a) Acontecimiento traumático severo: Aquel experimentado durante o con motivo del trabajo que se caracteriza por la ocurrencia de la muerte o que representa un peligro real para la integridad física de una o varias personas.
+b) Centro de trabajo: Todo aquel lugar, físico o virtual, en el que se desempeñen labores de producción, comercialización, transporte y almacenamiento o prestación de servicios, incluyendo el domicilio del trabajador cuando realice trabajo remoto.
+c) Entorno organizacional favorable: Aquel en el que se promueve el sentido de pertenencia de los trabajadores a la empresa, con especial atención al equilibrio entre vida laboral y personal.
+d) Factores de riesgo psicosocial: Aquellos que pueden provocar trastornos de ansiedad, del ciclo sueño-vigilia y de estrés grave, incluyendo el tecnoestrés y la fatiga digital.
+e) Política de prevención: La declaración de principios y compromisos que establece el patrón para la prevención de factores de riesgo psicosocial.
+f) Derecho a la desconexión digital: El derecho de los trabajadores a no recibir ni responder comunicaciones laborales fuera de su jornada de trabajo.
+g) Tecnoestrés: El estado de malestar psicológico derivado del uso intensivo de tecnologías de la información y comunicación en el ámbito laboral.
+
+CAPÍTULO II — OBLIGACIONES DEL PATRÓN
+
+Artículo 4. Obligaciones generales
+El patrón deberá:
+I. Establecer por escrito e implementar una política de prevención de riesgos psicosociales que incluya disposiciones sobre el derecho a la desconexión digital.
+II. Identificar y analizar los factores de riesgo psicosocial, incluyendo los asociados al trabajo remoto.
+III. Adoptar las medidas para prevenir los factores de riesgo psicosocial, con protocolos específicos para modalidades de trabajo remoto e híbrido.
+IV. Practicar exámenes médicos a los trabajadores expuestos a violencia laboral o factores de riesgo psicosocial.
+V. Garantizar el derecho a la desconexión digital de los trabajadores fuera de su jornada laboral.
+VI. Implementar programas de capacitación sobre el uso saludable de tecnologías digitales.
+
+Artículo 5. Identificación de factores de riesgo
+La identificación de los factores de riesgo psicosocial deberá realizarse mediante:
+I. La aplicación de cuestionarios para centros de trabajo de hasta 15 trabajadores.
+II. La aplicación de la guía de referencia III para centros de trabajo con más de 15 trabajadores.
+III. La aplicación de un módulo complementario sobre riesgos digitales para centros de trabajo con más del 30% de personal en modalidad remota.
+
+Artículo 6. Medidas de prevención
+Las medidas de prevención y acciones de control deberán incluir:
+I. Mecanismos seguros y confidenciales para la recepción de quejas, incluyendo canales digitales accesibles.
+II. Acciones que promuevan el sentido de pertenencia, adaptadas a equipos remotos e híbridos.
+III. Capacitación y sensibilización de los directivos sobre riesgos psicosociales en entornos digitales.
+IV. Protocolos de desconexión digital que establezcan horarios claros de disponibilidad.
+V. Evaluación ergonómica del espacio de trabajo remoto cuando este sea proporcionado o requerido por el patrón.
+
+CAPÍTULO III — EVALUACIÓN Y SEGUIMIENTO
+
+Artículo 7. Evaluación periódica
+Las empresas con más de 15 trabajadores deberán aplicar la guía de referencia III del presente instrumento, con una periodicidad semestral.
+
+Los resultados de la evaluación deberán:
+I. Documentarse y conservarse al menos 5 años en formato digital con respaldo.
+II. Servir de base para la implementación de las medidas de prevención.
+III. Comunicarse a la comisión mixta de seguridad e higiene y al comité de bienestar digital cuando exista.
+IV. Incluir indicadores específicos sobre factores de riesgo asociados al trabajo remoto.
+
+Artículo 7-Bis. Evaluación complementaria para sectores de alto riesgo
+Las empresas en sectores de alto riesgo psicosocial (salud, seguridad, servicios de emergencia, educación y atención al cliente con alto volumen) deberán incluir una evaluación clínica complementaria realizada por profesionales de la salud mental certificados.
+
+La evaluación clínica complementaria deberá:
+I. Realizarse con periodicidad anual como mínimo.
+II. Incluir entrevistas individuales confidenciales.
+III. Generar un plan de acción personalizado para trabajadores en situación de riesgo.
+IV. Los costos de la evaluación serán a cargo del patrón.
+
+Artículo 8. Seguimiento de medidas
+El patrón deberá dar seguimiento a las medidas de prevención adoptadas mediante:
+I. Evaluaciones periódicas de las condiciones de trabajo, incluyendo las condiciones de trabajo remoto.
+II. Registro de las acciones correctivas implementadas en formato digital auditable.
+III. Revisión semestral de la política de prevención (anteriormente anual).
+IV. Reporte trimestral de indicadores de bienestar al comité mixto de seguridad e higiene.
+
+CAPÍTULO IV — SANCIONES
+
+Artículo 9. Infracciones y sanciones
+El incumplimiento de las disposiciones de esta Norma será sancionado conforme a lo establecido en la Ley Federal del Trabajo y el Reglamento Federal de Seguridad y Salud en el Trabajo.
+
+Multas aplicables (actualizadas):
+- Falta de política de prevención: 100 a 200 UMA por trabajador (antes 50 a 100)
+- Falta de evaluación periódica: 200 a 400 UMA por trabajador (antes 100 a 200)
+- Falta de atención a factores de riesgo identificados: 400 a 1000 UMA por trabajador (antes 200 a 500)
+- Violación al derecho de desconexión digital: 50 a 100 UMA por trabajador afectado (NUEVA)
+- Falta de evaluación clínica en sectores de alto riesgo: 300 a 600 UMA por trabajador (NUEVA)
+
+TRANSITORIOS
+
+Primero. La presente modificación entrará en vigor a los 90 días naturales siguientes a su publicación en el Diario Oficial de la Federación.
+
+Segundo. Los centros de trabajo que ya aplican la Norma vigente dispondrán de 180 días para adecuarse a las nuevas disposiciones relativas a la desconexión digital y evaluación semestral.
+
+Tercero. Los centros de trabajo en sectores de alto riesgo dispondrán de 270 días para implementar la evaluación clínica complementaria prevista en el Artículo 7-Bis.
+
+Cuarto. La Secretaría del Trabajo y Previsión Social publicará dentro de los 60 días siguientes a la entrada en vigor los lineamientos para la aplicación del módulo complementario sobre riesgos digitales.

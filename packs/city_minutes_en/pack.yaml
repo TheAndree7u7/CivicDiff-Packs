@@ -1,0 +1,30 @@
+id: city_minutes_en
+name: "City Council Minutes (EN)"
+description: "Analyzes changes in city council meeting minutes and municipal ordinances. Detects policy shifts, budget amendments, zoning changes, and new compliance requirements."
+language: en
+input_languages:
+  - en
+output_language: en
+version: "1.0.0"
+
+safety_policy: |
+  - Do NOT provide legal advice or recommend specific legal actions.
+  - Do NOT editorialize or inject political opinion.
+  - Flag any content that appears redacted or intentionally obscured.
+  - All findings must cite specific source locations.
+  - Output must be factual and verifiable against source text.
+
+output_constraints:
+  executive_summary_max_words: 60
+  what_changed_max_items: 7
+  deadlines_max_items: 7
+  action_checklist_max_items: 7
+  risk_flags_max_items: 5
+  evidence_max_per_item: 2
+
+tags:
+  - municipal
+  - council-minutes
+  - ordinances
+  - zoning
+  - budget

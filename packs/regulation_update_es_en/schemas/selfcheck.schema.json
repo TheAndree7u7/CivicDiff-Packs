@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CivicDiff Selfcheck Scorecard",
+  "type": "object",
+  "required": ["valid_json", "schema_pass", "word_limits_ok", "safety_ok", "notes"],
+  "additionalProperties": false,
+  "properties": {
+    "valid_json": { "type": "boolean" },
+    "schema_pass": { "type": "boolean" },
+    "word_limits_ok": { "type": "boolean" },
+    "safety_ok": { "type": "boolean" },
+    "notes": { "type": "string", "description": "Max 40 words of feedback" }
+  }
+}

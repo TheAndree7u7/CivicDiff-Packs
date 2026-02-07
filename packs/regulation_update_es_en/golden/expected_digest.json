@@ -1,0 +1,130 @@
+{
+  "executive_summary": "Mexico's NOM-035 workplace psychosocial risk regulation expanded to cover remote/hybrid work, added digital disconnection rights, lowered evaluation threshold from 50 to 15 employees, doubled evaluation frequency to semi-annual, introduced mandatory clinical assessment for high-risk sectors, and doubled penalties.",
+  "what_changed": [
+    {
+      "change": "Employee threshold for mandatory psychosocial risk evaluation lowered from 50 to 15 workers (Artículo 5)",
+      "impact": "high",
+      "evidence": ["src-diff:articulo-5", "src-new:articulo-5"]
+    },
+    {
+      "change": "Evaluation frequency increased from annual to semi-annual (Artículo 7)",
+      "impact": "high",
+      "evidence": ["src-diff:articulo-7", "src-new:articulo-7"]
+    },
+    {
+      "change": "New digital disconnection right (derecho a la desconexión digital) — employers must guarantee workers' right to disconnect outside working hours",
+      "impact": "high",
+      "evidence": ["src-new:articulo-3-f", "src-new:articulo-4-v"]
+    },
+    {
+      "change": "Scope expanded to cover remote work, hybrid arrangements, and digital platform workers (Artículo 2)",
+      "impact": "high",
+      "evidence": ["src-diff:articulo-2", "src-new:articulo-2"]
+    },
+    {
+      "change": "New Article 7-Bis: Mandatory annual clinical evaluation by certified mental health professionals for high-risk sectors (health, security, emergency, education, high-volume customer service)",
+      "impact": "med",
+      "evidence": ["src-new:articulo-7-bis"]
+    },
+    {
+      "change": "Penalties approximately doubled across all categories; two new penalty categories added for digital disconnection violations and missing clinical evaluations",
+      "impact": "high",
+      "evidence": ["src-diff:articulo-9", "src-new:articulo-9"]
+    },
+    {
+      "change": "New digital risk assessment module required for workplaces with >30% remote staff (Artículo 5.III)",
+      "impact": "med",
+      "evidence": ["src-new:articulo-5-iii"]
+    }
+  ],
+  "deadlines": [
+    {
+      "date": null,
+      "item": "90 days after DOF publication: New regulation enters into force (Transitorio Primero)",
+      "owner": "All employers (patrones)",
+      "evidence": ["src-new:transitorio-primero"]
+    },
+    {
+      "date": null,
+      "item": "180 days: Existing workplaces must comply with digital disconnection and semi-annual evaluation requirements (Transitorio Segundo)",
+      "owner": "Currently compliant employers",
+      "evidence": ["src-new:transitorio-segundo"]
+    },
+    {
+      "date": null,
+      "item": "270 days: High-risk sector employers must implement clinical evaluation per Article 7-Bis (Transitorio Tercero)",
+      "owner": "Health, security, emergency, education, customer service employers",
+      "evidence": ["src-new:transitorio-tercero"]
+    },
+    {
+      "date": null,
+      "item": "60 days after entry: STPS to publish guidelines for digital risk assessment module (Transitorio Cuarto)",
+      "owner": "Secretaría del Trabajo y Previsión Social (STPS)",
+      "evidence": ["src-new:transitorio-cuarto"]
+    }
+  ],
+  "action_checklist": [
+    {
+      "action": "Assess current employee count against new 15-worker threshold for mandatory psychosocial risk evaluation",
+      "priority": "P0",
+      "evidence": ["src-new:articulo-5"]
+    },
+    {
+      "action": "Implement digital disconnection policy establishing clear availability hours for all employees",
+      "priority": "P0",
+      "evidence": ["src-new:articulo-4-v"]
+    },
+    {
+      "action": "Update evaluation schedule from annual to semi-annual and budget accordingly",
+      "priority": "P0",
+      "evidence": ["src-new:articulo-7"]
+    },
+    {
+      "action": "Determine if organization falls under high-risk sector definition requiring clinical evaluation (Article 7-Bis)",
+      "priority": "P1",
+      "evidence": ["src-new:articulo-7-bis"]
+    },
+    {
+      "action": "Establish digital reporting channels for psychosocial risk complaints per updated Article 6.I",
+      "priority": "P1",
+      "evidence": ["src-new:articulo-6-i"]
+    },
+    {
+      "action": "Conduct ergonomic assessment of remote work spaces if company provides or mandates remote work",
+      "priority": "P2",
+      "evidence": ["src-new:articulo-6-v"]
+    }
+  ],
+  "risk_flags": [
+    {
+      "flag": "Massive scope expansion for SMEs",
+      "why": "Lowering the threshold from 50 to 15 employees brings thousands of small businesses into mandatory evaluation scope, many lacking existing psychosocial risk programs.",
+      "evidence": ["src-diff:articulo-5"]
+    },
+    {
+      "flag": "Doubled penalties increase compliance urgency",
+      "why": "All penalty ranges approximately doubled, with maximum fines reaching 1000 UMA per worker for unaddressed risks. New penalty categories add further exposure.",
+      "evidence": ["src-new:articulo-9"]
+    },
+    {
+      "flag": "Remote work definition ambiguity",
+      "why": "Inclusion of 'digital platform workers' and 'virtual workplaces' may create classification disputes about which workers and arrangements fall under the regulation.",
+      "evidence": ["src-new:articulo-2"]
+    },
+    {
+      "flag": "Clinical evaluation capacity constraints",
+      "why": "Requirement for certified mental health professionals in high-risk sectors may face supply constraints given the 270-day implementation timeline.",
+      "evidence": ["src-new:articulo-7-bis"]
+    }
+  ],
+  "provenance": [
+    { "source_id": "src-old", "location": "Artículos 1-9, Transitorios", "type": "old" },
+    { "source_id": "src-new", "location": "Artículos 1-9, 7-Bis, Transitorios 1-4", "type": "new" },
+    { "source_id": "src-diff", "location": "Full diff — Articles 2, 4, 5, 7, 9", "type": "diff" }
+  ],
+  "meta": {
+    "mode": "demo",
+    "model": "gemini-2.0-flash",
+    "token_estimate": "~6,800 tokens"
+  }
+}

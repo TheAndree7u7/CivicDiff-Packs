@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "name": "CivicDiff Packs Registry",
+  "description": "Public registry of civic document analysis packs",
+  "packs": [
+    {
+      "id": "city_minutes_en",
+      "path": "packs/city_minutes_en",
+      "name": "City Council Minutes (EN)",
+      "language": "en",
+      "status": "ready"
+    },
+    {
+      "id": "regulation_update_es_en",
+      "path": "packs/regulation_update_es_en",
+      "name": "Regulation Update (ES→EN)",
+      "language": "es_en",
+      "status": "ready"
+    }
+  ]
+}

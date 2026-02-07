@@ -1,0 +1,129 @@
+{
+  "executive_summary": "City council adopted Downtown Overlay District with increased affordable housing (15%), restored parking (1.25/unit), new green building standards, and 8-story height limit on Main Street. Emergency water main repair authorized ($1.2M). New health impact assessment ordinance introduced for industrial developments.",
+  "what_changed": [
+    {
+      "change": "Downtown Overlay District adopted with affordable housing requirement increased from 10% to 15% for developments over 20 units",
+      "impact": "high",
+      "evidence": ["src-new:ord-2026-001-amend-1", "src-diff:affordable-housing"]
+    },
+    {
+      "change": "Parking requirement set at 1.25 spaces per unit (compromise between original 1.5 and proposed 1.0)",
+      "impact": "med",
+      "evidence": ["src-new:ord-2026-001-amend-2", "src-diff:parking"]
+    },
+    {
+      "change": "New mandatory green building standards — LEED Silver equivalent or higher for all new construction in overlay district",
+      "impact": "high",
+      "evidence": ["src-new:ord-2026-001-amend-6"]
+    },
+    {
+      "change": "Height limit increased from 6 to 8 stories for parcels fronting Main Street",
+      "impact": "high",
+      "evidence": ["src-new:ord-2026-001-amend-7", "src-diff:height-limit"]
+    },
+    {
+      "change": "New Health Impact Assessment requirement introduced for industrial developments over 25,000 sq ft (first reading)",
+      "impact": "med",
+      "evidence": ["src-new:ord-2026-004"]
+    },
+    {
+      "change": "Emergency water main repair authorized — $1.2M from Water Enterprise Fund for critical 36-inch main beneath Riverside Boulevard",
+      "impact": "high",
+      "evidence": ["src-new:res-2026-r-007"]
+    },
+    {
+      "change": "$500K state DOT grant accepted for bicycle infrastructure including protected bike lanes and bike share pilot",
+      "impact": "low",
+      "evidence": ["src-new:ba-2026-04"]
+    }
+  ],
+  "deadlines": [
+    {
+      "date": "2026-03-07",
+      "item": "Downtown Overlay District effective date (30 days after adoption)",
+      "owner": "City Planning Department",
+      "evidence": ["src-new:ord-2026-001-effective"]
+    },
+    {
+      "date": "2026-03-04",
+      "item": "Health Impact Assessment ordinance second reading",
+      "owner": "City Council",
+      "evidence": ["src-new:ord-2026-004-schedule"]
+    },
+    {
+      "date": null,
+      "item": "Emergency water main repair — 8-12 weeks from procurement start",
+      "owner": "Public Works Department",
+      "evidence": ["src-new:res-2026-r-007-timeline"]
+    },
+    {
+      "date": "2026-04-12",
+      "item": "Fire Station #3 ribbon cutting",
+      "owner": "City Manager",
+      "evidence": ["src-new:city-manager-report"]
+    },
+    {
+      "date": "2026-05-01",
+      "item": "Warehouse District comprehensive report to council (May meeting)",
+      "owner": "City Manager",
+      "evidence": ["src-new:warehouse-discussion"]
+    }
+  ],
+  "action_checklist": [
+    {
+      "action": "Review updated Downtown Overlay District requirements — 15% affordable housing, 1.25 parking ratio, LEED Silver standard",
+      "priority": "P0",
+      "evidence": ["src-new:ord-2026-001"]
+    },
+    {
+      "action": "Prepare for potential water service disruptions — 72-hour advance notice expected for affected areas near Riverside Boulevard",
+      "priority": "P0",
+      "evidence": ["src-new:res-2026-r-007-timeline"]
+    },
+    {
+      "action": "Track Health Impact Assessment ordinance second reading on March 4 if operating industrial facilities near residential zones",
+      "priority": "P1",
+      "evidence": ["src-new:ord-2026-004"]
+    },
+    {
+      "action": "Existing commercial tenants in overlay district should review 18-month relocation assistance provisions",
+      "priority": "P1",
+      "evidence": ["src-new:ord-2026-001-amend-4"]
+    },
+    {
+      "action": "Monitor warehouse district environmental review — community input sessions Feb 22 and Mar 8",
+      "priority": "P2",
+      "evidence": ["src-new:warehouse-discussion"]
+    }
+  ],
+  "risk_flags": [
+    {
+      "flag": "Height increase may impact adjacent residential neighborhoods",
+      "why": "The increase from 6 to 8 stories on Main Street parcels was contested (2 opposing votes). CM Williams raised neighborhood impact concerns that were not fully addressed.",
+      "evidence": ["src-new:ord-2026-001-discussion"]
+    },
+    {
+      "flag": "Critical water infrastructure failure risk",
+      "why": "36-inch water main from 1978 has critical corrosion at three joints. Serves 8,500 connections. Emergency declaration indicates imminent failure risk.",
+      "evidence": ["src-new:res-2026-r-007"]
+    },
+    {
+      "flag": "Warehouse district timeline slipping",
+      "why": "Traffic study delayed from March to April 2026. Comprehensive report pushed to May. Expanded scope adds complexity but also adds $45K economic analysis cost.",
+      "evidence": ["src-new:warehouse-discussion"]
+    }
+  ],
+  "provenance": [
+    { "source_id": "src-old", "location": "Ordinance 2026-001, first reading", "type": "old" },
+    { "source_id": "src-new", "location": "Ordinance 2026-001, second reading (adopted)", "type": "new" },
+    { "source_id": "src-new", "location": "Ordinance 2026-004, first reading", "type": "new" },
+    { "source_id": "src-new", "location": "Resolution 2026-R-007", "type": "new" },
+    { "source_id": "src-new", "location": "Budget Amendment BA-2026-04", "type": "new" },
+    { "source_id": "src-diff", "location": "Lines 1-85 (overlay amendments)", "type": "diff" }
+  ],
+  "meta": {
+    "mode": "demo",
+    "model": "gemini-2.0-flash",
+    "token_estimate": "~5,200 tokens"
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CivicDiff Digest",
+  "type": "object",
+  "required": ["executive_summary", "what_changed", "deadlines", "action_checklist", "risk_flags", "provenance", "meta"],
+  "additionalProperties": false,
+  "properties": {
+    "executive_summary": {
+      "type": "string",
+      "description": "Concise summary of changes, max 60 words"
+    },
+    "what_changed": {
+      "type": "array",
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "required": ["change", "impact", "evidence"],
+        "additionalProperties": false,
+        "properties": {
+          "change": { "type": "string" },
+          "impact": { "type": "string", "enum": ["low", "med", "high"] },
+          "evidence": { "type": "array", "maxItems": 2, "items": { "type": "string" } }
+        }
+      }
+    },
+    "deadlines": {
+      "type": "array",
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "required": ["date", "item", "owner", "evidence"],
+        "additionalProperties": false,
+        "properties": {
+          "date": { "type": ["string", "null"] },
+          "item": { "type": "string" },
+          "owner": { "type": ["string", "null"] },
+          "evidence": { "type": "array", "maxItems": 2, "items": { "type": "string" } }
+        }
+      }
+    },
+    "action_checklist": {
+      "type": "array",
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "required": ["action", "priority", "evidence"],
+        "additionalProperties": false,
+        "properties": {
+          "action": { "type": "string" },
+          "priority": { "type": "string", "enum": ["P0", "P1", "P2"] },
+          "evidence": { "type": "array", "maxItems": 2, "items": { "type": "string" } }
+        }
+      }
+    },
+    "risk_flags": {
+      "type": "array",
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "required": ["flag", "why", "evidence"],
+        "additionalProperties": false,
+        "properties": {
+          "flag": { "type": "string" },
+          "why": { "type": "string" },
+          "evidence": { "type": "array", "maxItems": 2, "items": { "type": "string" } }
+        }
+      }
+    },
+    "provenance": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source_id", "location", "type"],
+        "additionalProperties": false,
+        "properties": {
+          "source_id": { "type": "string" },
+          "location": { "type": "string" },
+          "type": { "type": "string", "enum": ["old", "new", "diff"] }
+        }
+      }
+    },
+    "meta": {
+      "type": "object",
+      "required": ["mode", "model", "token_estimate"],
+      "additionalProperties": false,
+      "properties": {
+        "mode": { "type": "string", "enum": ["demo", "live"] },
+        "model": { "type": "string" },
+        "token_estimate": { "type": "string" }
+      }
+    }
+  }
+}
