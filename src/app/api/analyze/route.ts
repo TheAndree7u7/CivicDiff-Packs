@@ -75,7 +75,33 @@ export async function POST(request: NextRequest) {
       ...result,
     })
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Unknown error"
-    return NextResponse.json({ error: message }, { status: 500 })
+    const raw = error instanceof Error ? error.message : String(error)
+
+    // Detect Gemini API quota / rate-limit errors
+    if (raw.includes("RESOURCE_EXHAUSTED") || raw.includes("quota") || raw.includes("429")) {
+      const retryMatch = raw.match(/retry\s*(?:in|Delay['"]:?\s*['"]\s*)(\d+)/i)
+      const retrySec = retryMatch ? parseInt(retryMatch[1], 10) : 60
+      return NextResponse.json(
+        {
+          error: "Gemini API quota exceeded. Your free-tier limit has been reached. Please wait a few minutes or check your plan at ai.google.dev.",
+          code: "GEMINI_QUOTA_EXCEEDED",
+          retryAfterMs: retrySec * 1000,
+        },
+        { status: 429, headers: { "Retry-After": String(retrySec) } }
+      )
+    }
+
+    // Detect other Gemini API errors
+    if (raw.includes("GoogleGenAI") || raw.includes("generativelanguage.googleapis.com")) {
+      return NextResponse.json(
+        {
+          error: "Gemini API error. Please verify your API key is valid and try again.",
+          code: "GEMINI_API_ERROR",
+        },
+        { status: 502 }
+      )
+    }
+
+    return NextResponse.json({ error: raw }, { status: 500 })
   }
 }

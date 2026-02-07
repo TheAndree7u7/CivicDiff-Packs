@@ -159,17 +159,32 @@ export function AnalysisRunner({
       const elapsed = Date.now() - startTime
 
       if (!res.ok) {
-        // Handle rate limit
+        const errorCode = data.code || ""
+        const friendlyMsg = data.error || `API error (${res.status})`
+
         if (res.status === 429) {
           const retryAfter = Math.ceil((data.retryAfterMs || 60000) / 1000)
-          setApiError(`Rate limit reached. Try again in ${retryAfter}s.`)
-          addLog(`ERROR: Rate limit exceeded. Retry in ${retryAfter}s`)
-          toast.error(`Rate limit reached. Wait ${retryAfter}s before retrying.`)
-          updateStep("analyze", { status: "error", error: "Rate limited" })
+          const isQuota = errorCode === "GEMINI_QUOTA_EXCEEDED"
+          const label = isQuota ? "Gemini quota exceeded" : "Rate limit reached"
+          const hint = isQuota
+            ? `Your free-tier API quota is exhausted. Try again in ~${retryAfter}s or use Demo mode.`
+            : `Too many requests. Try again in ${retryAfter}s.`
+
+          setApiError(hint)
+          addLog(`ERROR: ${label}`)
+          toast.error(hint)
+          updateStep("analyze", { status: "error", error: label })
           setIsRunning(false)
           return
         }
-        throw new Error(data.error || `API error ${res.status}`)
+
+        // Any other API error — show clean message, not raw JSON
+        setApiError(friendlyMsg)
+        addLog(`ERROR: ${friendlyMsg}`)
+        toast.error(friendlyMsg)
+        updateStep("analyze", { status: "error", error: friendlyMsg })
+        setIsRunning(false)
+        return
       }
 
       updateStep("analyze", { status: "done", duration: elapsed })
@@ -249,7 +264,16 @@ export function AnalysisRunner({
       if (err instanceof Error && err.name === "AbortError") {
         addLog("Pipeline aborted by user.")
       } else {
-        const msg = err instanceof Error ? err.message : "Unknown error"
+        let msg = err instanceof Error ? err.message : "Unknown error"
+        // Sanitize: if the message looks like raw JSON, extract a clean summary
+        if (msg.startsWith("{") || msg.startsWith("[") || msg.length > 200) {
+          try {
+            const parsed = JSON.parse(msg)
+            msg = parsed?.error?.message || parsed?.error || "An unexpected error occurred."
+          } catch {
+            msg = msg.slice(0, 120) + "..."
+          }
+        }
         setApiError(msg)
         addLog(`ERROR: ${msg}`)
         toast.error(msg)
