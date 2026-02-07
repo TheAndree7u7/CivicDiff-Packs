@@ -1,6 +1,6 @@
 // Copyright 2025-2026 CivicDiff Packs Contributors
 import { describe, it, expect } from "vitest"
-import { DigestSchema, SelfcheckSchema, validateDigest, validateSelfcheck } from "@/lib/schemas"
+import { DigestSchema, SelfcheckSchema, validateDigest, validateSelfcheck } from "@/lib/shared/schemas"
 import cityGolden from "../packs/city_minutes_en/golden/expected_digest.json"
 import regGolden from "../packs/regulation_update_es_en/golden/expected_digest.json"
 

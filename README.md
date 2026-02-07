@@ -64,25 +64,38 @@ pnpm dev
 ## Project Structure
 
 ```
-├── app/                    # Next.js App Router pages & API routes
-│   ├── api/analyze/        # POST /api/analyze — run pipeline
-│   ├── api/selfcheck/      # POST /api/selfcheck — validate digest
-│   ├── packs/[id]/         # Pack detail page
-│   ├── reports/[id]/       # Report viewer page
-│   ├── docs/               # Documentation page
-│   └── about/              # About page
-├── components/             # React components (shadcn/ui based)
-├── lib/                    # Core logic
-│   ├── schemas.ts          # Zod schemas for digest & selfcheck
-│   ├── gemini.ts           # Gemini API integration
-│   ├── pipeline.ts         # Demo & live pipeline orchestration
-│   ├── diff.ts             # Unified diff computation
-│   └── mock-data.ts        # Pack & report data + golden outputs
-├── packs/                  # Pack configurations
-│   ├── city_minutes_en/    # English council minutes pack
-│   └── regulation_update_es_en/  # Spanish→English regulation pack
-├── docs/                   # Project documentation
-└── registry.json           # Pack registry
+├── src/
+│   ├── app/                        # Next.js App Router pages & API routes
+│   │   ├── api/analyze/            # POST /api/analyze — run pipeline
+│   │   ├── api/selfcheck/          # POST /api/selfcheck — validate digest
+│   │   ├── api/health/             # GET /api/health — health check
+│   │   ├── packs/[id]/             # Pack detail page
+│   │   ├── reports/[id]/           # Report viewer (static + dynamic)
+│   │   ├── docs/                   # Documentation page
+│   │   └── about/                  # About page
+│   ├── components/                 # React components (shadcn/ui based)
+│   │   └── ui/                     # shadcn/ui primitives
+│   ├── hooks/                      # Custom React hooks
+│   ├── lib/
+│   │   ├── server/                 # Backend-only logic
+│   │   │   ├── gemini.ts           # Gemini API integration
+│   │   │   ├── pipeline.ts         # Demo & live pipeline orchestration
+│   │   │   ├── diff.ts             # Unified diff computation
+│   │   │   └── rate-limit.ts       # In-memory rate limiter + budget cap
+│   │   ├── shared/                 # Used by both frontend & backend
+│   │   │   ├── schemas.ts          # Zod schemas for digest & selfcheck
+│   │   │   └── types.ts            # Shared type re-exports
+│   │   └── client/                 # Frontend-only logic
+│   │       ├── mock-data.ts        # Pack & report data + golden outputs
+│   │       └── utils.ts            # cn() utility
+│   ├── styles/                     # Global styles
+│   └── middleware.ts               # Security headers & content-type validation
+├── packs/                          # Pack configurations
+│   ├── city_minutes_en/            # English council minutes pack
+│   └── regulation_update_es_en/    # Spanish→English regulation pack
+├── tests/                          # Vitest test suites
+├── docs/                           # Project documentation
+└── registry.json                   # Pack registry
 ```
 
 ## Deploy

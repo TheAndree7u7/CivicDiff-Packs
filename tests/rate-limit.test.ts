@@ -1,6 +1,6 @@
 // Copyright 2025-2026 CivicDiff Packs Contributors
 import { describe, it, expect, beforeEach } from "vitest"
-import { checkRateLimit, checkHourlyBudget, getBudgetInfo } from "@/lib/rate-limit"
+import { checkRateLimit, checkHourlyBudget, getBudgetInfo } from "@/lib/server/rate-limit"
 
 describe("checkRateLimit", () => {
   it("allows first request", () => {
