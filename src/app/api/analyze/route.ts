@@ -77,6 +77,17 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     const raw = error instanceof Error ? error.message : String(error)
 
+    // Detect Gemini model overloaded (503)
+    if (raw.includes("503") || raw.includes("UNAVAILABLE") || raw.includes("overloaded")) {
+      return NextResponse.json(
+        {
+          error: "Gemini model is temporarily overloaded. The server retried automatically but the issue persists. Please try again in a few seconds or select a different model.",
+          code: "GEMINI_MODEL_OVERLOADED",
+        },
+        { status: 503, headers: { "Retry-After": "10" } }
+      )
+    }
+
     // Detect Gemini API quota / rate-limit errors
     if (raw.includes("RESOURCE_EXHAUSTED") || raw.includes("quota") || raw.includes("429")) {
       const retryMatch = raw.match(/retry\s*(?:in|Delay['"]:?\s*['"]\s*)(\d+)/i)

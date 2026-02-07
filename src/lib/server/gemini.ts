@@ -183,6 +183,38 @@ function createClient() {
   return new GoogleGenAI({ apiKey })
 }
 
+// ── Retry with Exponential Backoff ────────────────────────────
+function isRetryableError(error: unknown): boolean {
+  const msg = error instanceof Error ? error.message : String(error)
+  return (
+    msg.includes("503") ||
+    msg.includes("UNAVAILABLE") ||
+    msg.includes("overloaded") ||
+    msg.includes("INTERNAL") ||
+    msg.includes("deadline") ||
+    msg.includes("500")
+  )
+}
+
+async function withRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promise<T> {
+  let lastError: unknown
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await fn()
+    } catch (error) {
+      lastError = error
+      if (attempt < maxRetries && isRetryableError(error)) {
+        const delay = Math.min(2000 * Math.pow(2, attempt), 16000)
+        console.warn(`[Gemini] Retryable error (attempt ${attempt + 1}/${maxRetries}), waiting ${delay}ms...`, error instanceof Error ? error.message : error)
+        await new Promise((r) => setTimeout(r, delay))
+      } else {
+        throw error
+      }
+    }
+  }
+  throw lastError
+}
+
 // ── Digest Generation (Structured Output) ──────────────────────
 export async function generateDigest(params: {
   systemPrompt: string
@@ -216,16 +248,18 @@ ${params.diff}
 Important: Set meta.mode to "live", meta.model to "${modelName}", and estimate the token count.
 `
 
-  const response = await client.models.generateContent({
-    model: modelName,
-    contents: [{ role: "user", parts: [{ text: userContent }] }],
-    config: {
-      systemInstruction: params.systemPrompt,
-      responseMimeType: "application/json",
-      responseSchema: digestResponseSchema,
-      temperature: 0.2,
-    },
-  })
+  const response = await withRetry(() =>
+    client.models.generateContent({
+      model: modelName,
+      contents: [{ role: "user", parts: [{ text: userContent }] }],
+      config: {
+        systemInstruction: params.systemPrompt,
+        responseMimeType: "application/json",
+        responseSchema: digestResponseSchema,
+        temperature: 0.2,
+      },
+    })
+  )
 
   const text = response.text || ""
   return JSON.parse(text) as Digest
@@ -248,15 +282,17 @@ ${params.selfcheckPrompt}
 ${JSON.stringify(params.digest, null, 2)}
 `
 
-  const response = await client.models.generateContent({
-    model: modelName,
-    contents: [{ role: "user", parts: [{ text: userContent }] }],
-    config: {
-      responseMimeType: "application/json",
-      responseSchema: selfcheckResponseSchema,
-      temperature: 0.1,
-    },
-  })
+  const response = await withRetry(() =>
+    client.models.generateContent({
+      model: modelName,
+      contents: [{ role: "user", parts: [{ text: userContent }] }],
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: selfcheckResponseSchema,
+        temperature: 0.1,
+      },
+    })
+  )
 
   const text = response.text || ""
   return JSON.parse(text) as Selfcheck

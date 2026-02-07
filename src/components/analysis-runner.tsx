@@ -91,14 +91,17 @@ export function AnalysisRunner({
   const logsEndRef = useRef<HTMLDivElement>(null)
   const abortRef = useRef<AbortController | null>(null)
 
-  // Load config from API on mount
+  // Load config from API on mount — default to live if API key present
   useEffect(() => {
     fetch("/api/config")
       .then((r) => r.json())
       .then((data) => {
         if (data.models) setAvailableModels(data.models)
         if (data.defaultModel) setSelectedModel(data.defaultModel)
-        if (data.hasApiKey) setHasApiKey(data.hasApiKey)
+        if (data.hasApiKey) {
+          setHasApiKey(true)
+          setMode("live")
+        }
       })
       .catch(() => {})
   }, [])
@@ -184,6 +187,16 @@ export function AnalysisRunner({
       if (!res.ok) {
         const errorCode = data.code || ""
         const friendlyMsg = data.error || `API error (${res.status})`
+
+        if (res.status === 503 || errorCode === "GEMINI_MODEL_OVERLOADED") {
+          const hint = "The Gemini model is temporarily overloaded. The server retried automatically. Please try again in a few seconds or select a different model."
+          setApiError(hint)
+          addLog("ERROR: Model overloaded (503)")
+          toast.error("Model overloaded — try again shortly or switch models")
+          updateStep("analyze", { status: "error", error: "Model overloaded" })
+          setIsRunning(false)
+          return
+        }
 
         if (res.status === 429) {
           const retryAfter = Math.ceil((data.retryAfterMs || 60000) / 1000)
@@ -312,46 +325,104 @@ export function AnalysisRunner({
 
   return (
     <div className="space-y-4">
-      <Card>
+      <Card className={cn(mode === "live" && "border-accent/30")}>
         <CardHeader className="pb-3">
-          <CardTitle className="text-sm">Run Analysis</CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="flex items-center gap-2 text-sm">
+              <Sparkles className="h-4 w-4 text-accent" />
+              Run Analysis
+            </CardTitle>
+            <Badge
+              variant="outline"
+              className={cn(
+                "text-[10px] gap-1",
+                hasApiKey
+                  ? "bg-accent/10 text-accent border-accent/30"
+                  : "bg-muted text-muted-foreground"
+              )}
+            >
+              <span className={cn("h-1.5 w-1.5 rounded-full", hasApiKey ? "bg-accent" : "bg-muted-foreground")} />
+              {hasApiKey ? "API Connected" : "Demo Only"}
+            </Badge>
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          {/* Mode toggle */}
+          {/* Mode toggle — Live is prominent */}
           <div className="space-y-2">
             <label className="text-xs font-medium text-foreground">Mode</label>
             <div className="flex gap-2">
               <Button
                 size="sm"
+                variant={mode === "live" ? "default" : "outline"}
+                className={cn(
+                  "flex-1 text-xs gap-1.5",
+                  mode === "live" && "bg-accent hover:bg-accent/90",
+                  mode !== "live" && "bg-transparent"
+                )}
+                onClick={() => setMode("live")}
+                disabled={isRunning || !hasApiKey}
+              >
+                <Radio className="h-3 w-3" />
+                Live
+                <Badge variant="secondary" className="ml-0.5 h-4 px-1 text-[8px] bg-background/20">
+                  Gemini AI
+                </Badge>
+              </Button>
+              <Button
+                size="sm"
                 variant={mode === "demo" ? "default" : "outline"}
-                className={cn("flex-1 text-xs", mode !== "demo" && "bg-transparent")}
+                className={cn("flex-1 text-xs gap-1.5", mode !== "demo" && "bg-transparent")}
                 onClick={() => setMode("demo")}
                 disabled={isRunning}
               >
-                <Play className="mr-1 h-3 w-3" />
+                <Play className="h-3 w-3" />
                 Demo
               </Button>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      size="sm"
-                      variant={mode === "live" ? "default" : "outline"}
-                      className={cn("flex-1 text-xs", mode !== "live" && "bg-transparent")}
-                      onClick={() => setMode("live")}
-                      disabled={isRunning}
-                    >
-                      <Radio className="mr-1 h-3 w-3" />
-                      Live
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="text-xs">Requires GEMINI_API_KEY in .env.local</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
             </div>
           </div>
+
+          {/* Model selector — always visible */}
+          {availableModels.length > 0 && (
+            <div className="space-y-2">
+              <label className="text-xs font-medium text-foreground">
+                Gemini Model
+              </label>
+              <Select
+                value={selectedModel}
+                onValueChange={setSelectedModel}
+                disabled={isRunning || mode === "demo"}
+              >
+                <SelectTrigger className={cn("h-8 text-xs", mode === "demo" && "opacity-60")}>
+                  <SelectValue placeholder="Select model" />
+                </SelectTrigger>
+                <SelectContent>
+                  {availableModels.map((m) => (
+                    <SelectItem key={m.id} value={m.id} className="text-xs">
+                      <div className="flex items-center gap-2">
+                        <span>{m.label}</span>
+                        <Badge
+                          variant="outline"
+                          className={cn(
+                            "h-4 px-1 text-[9px] font-normal",
+                            m.tier === "free"
+                              ? "bg-accent/15 text-accent border-accent/30"
+                              : "bg-chart-3/15 text-chart-3 border-chart-3/30"
+                          )}
+                        >
+                          {m.tier}
+                        </Badge>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="text-[10px] text-muted-foreground">
+                {mode === "demo"
+                  ? "Model selection applies to Live mode only"
+                  : availableModels.find((m) => m.id === selectedModel)?.description}
+              </p>
+            </div>
+          )}
 
           {/* Thinking level toggle */}
           <div className="space-y-2">
@@ -393,62 +464,28 @@ export function AnalysisRunner({
             </div>
           </div>
 
-          {/* Model selector (live mode only) */}
-          {mode === "live" && availableModels.length > 0 && (
-            <div className="space-y-2">
-              <label className="text-xs font-medium text-foreground">
-                Gemini Model
-              </label>
-              <Select value={selectedModel} onValueChange={setSelectedModel} disabled={isRunning}>
-                <SelectTrigger className="h-8 text-xs">
-                  <SelectValue placeholder="Select model" />
-                </SelectTrigger>
-                <SelectContent>
-                  {availableModels.map((m) => (
-                    <SelectItem key={m.id} value={m.id} className="text-xs">
-                      <div className="flex items-center gap-2">
-                        <span>{m.label}</span>
-                        <Badge
-                          variant="outline"
-                          className={cn(
-                            "h-4 px-1 text-[9px] font-normal",
-                            m.tier === "free"
-                              ? "bg-accent/15 text-accent border-accent/30"
-                              : "bg-chart-3/15 text-chart-3 border-chart-3/30"
-                          )}
-                        >
-                          {m.tier}
-                        </Badge>
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <p className="text-[10px] text-muted-foreground">
-                {availableModels.find((m) => m.id === selectedModel)?.description}
-              </p>
-            </div>
-          )}
-
-          {/* API key status */}
-          {mode === "live" && !hasApiKey && (
-            <Alert className="border-destructive/30 bg-destructive/5">
-              <AlertTriangle className="h-4 w-4 text-destructive" />
-              <AlertDescription className="text-xs text-destructive">
-                No API key detected. Set <code className="font-mono text-[10px] bg-muted px-1 rounded">GEMINI_API_KEY</code> in your <code className="font-mono text-[10px] bg-muted px-1 rounded">.env.local</code> file.
-              </AlertDescription>
-            </Alert>
-          )}
-
-          {/* Cost estimate for live mode */}
-          {mode === "live" && (
+          {/* API key warning */}
+          {!hasApiKey && (
             <Alert className="border-chart-3/30 bg-chart-3/5">
               <AlertTriangle className="h-4 w-4 text-chart-3" />
               <AlertDescription className="text-xs text-chart-3">
-                Live mode calls Gemini API. Estimated: ~{pack.inputSizeEstimate} input → ~2KB output.
-                Rate limited to 5 calls/min, 50/hour.
+                No API key detected. Set <code className="font-mono text-[10px] bg-muted px-1 rounded">GEMINI_API_KEY</code> in <code className="font-mono text-[10px] bg-muted px-1 rounded">.env.local</code> to enable Live mode.
               </AlertDescription>
             </Alert>
+          )}
+
+          {/* Live mode info */}
+          {mode === "live" && (
+            <div className="rounded-lg border border-accent/20 bg-accent/5 p-3 space-y-1.5">
+              <p className="text-xs font-medium text-accent flex items-center gap-1.5">
+                <Sparkles className="h-3 w-3" />
+                Live Mode — Gemini AI
+              </p>
+              <p className="text-[10px] text-muted-foreground leading-relaxed">
+                Real Gemini API call with structured output. ~{pack.inputSizeEstimate} input → ~2KB validated JSON.
+                Rate limited to 5/min, 50/hour. Includes self-check validation pass.
+              </p>
+            </div>
           )}
 
           {/* Budget info */}
@@ -466,16 +503,20 @@ export function AnalysisRunner({
 
           {/* Run button */}
           <Button
-            className="w-full"
+            className={cn(
+              "w-full gap-2",
+              mode === "live" && "bg-accent hover:bg-accent/90 text-accent-foreground"
+            )}
             onClick={handleRun}
             disabled={isDisabled}
+            size="lg"
           >
             {isRunning ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <Loader2 className="h-4 w-4 animate-spin" />
             ) : mode === "live" ? (
-              <Radio className="mr-2 h-4 w-4" />
+              <Radio className="h-4 w-4" />
             ) : (
-              <Play className="mr-2 h-4 w-4" />
+              <Play className="h-4 w-4" />
             )}
             {isRunning
               ? "Running Pipeline..."
