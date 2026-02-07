@@ -4,6 +4,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { runDemoPipeline, runLivePipeline } from "@/lib/pipeline"
 import { getGeminiConfig } from "@/lib/gemini"
+import { checkRateLimit, checkHourlyBudget, getClientId, getBudgetInfo, RATE_LIMITS } from "@/lib/rate-limit"
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,6 +15,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "packId is required" }, { status: 400 })
     }
 
+    const clientId = getClientId(request)
+
     if (mode === "live") {
       const config = getGeminiConfig()
       if (!config.hasKey) {
@@ -23,20 +26,48 @@ export async function POST(request: NextRequest) {
         )
       }
 
+      // Rate limit: per-minute
+      const rl = checkRateLimit(`live:${clientId}`, RATE_LIMITS.live())
+      if (!rl.allowed) {
+        return NextResponse.json(
+          { error: "Rate limit exceeded. Try again shortly.", retryAfterMs: rl.retryAfterMs },
+          { status: 429, headers: { "Retry-After": String(Math.ceil(rl.retryAfterMs / 1000)) } }
+        )
+      }
+
+      // Budget cap: per-hour
+      const budget = checkHourlyBudget(clientId)
+      if (!budget.allowed) {
+        return NextResponse.json(
+          { error: "Hourly API budget exhausted. Wait for reset to avoid excessive spending.", retryAfterMs: budget.retryAfterMs },
+          { status: 429, headers: { "Retry-After": String(Math.ceil(budget.retryAfterMs / 1000)) } }
+        )
+      }
+
       const result = await runLivePipeline(packId, {
         model: model || config.model,
         thinkingLevel: thinkingLevel || config.thinkingLevel,
         useAgentic: useAgentic || false,
       })
 
+      const budgetInfo = getBudgetInfo(clientId)
       return NextResponse.json({
         success: true,
         mode: "live",
+        budget: budgetInfo,
         ...result,
       })
     }
 
-    // Demo mode (default)
+    // Demo mode — lighter rate limit
+    const rl = checkRateLimit(`demo:${clientId}`, RATE_LIMITS.demo())
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: "Rate limit exceeded for demo mode. Try again shortly.", retryAfterMs: rl.retryAfterMs },
+        { status: 429, headers: { "Retry-After": String(Math.ceil(rl.retryAfterMs / 1000)) } }
+      )
+    }
+
     const result = await runDemoPipeline(packId)
     return NextResponse.json({
       success: true,

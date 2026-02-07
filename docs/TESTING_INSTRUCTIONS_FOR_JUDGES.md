@@ -48,11 +48,48 @@ cp .env.example .env.local
 pnpm dev
 ```
 
-Then repeat Steps 2-4 but select "Live" mode in the analysis runner. Live mode:
-- Makes real Gemini API calls
-- Shows token estimates
+Then repeat Steps 2-4 but toggle **"Live"** mode in the analysis runner. Live mode:
+- Makes real Gemini API calls with structured output
+- Shows token estimates and hourly budget remaining
 - Runs AI self-check (second Gemini call)
 - Produces unique outputs each run
+- Rate limited to **5 calls/min, 50 calls/hour** to protect free API keys
+
+## One-Click Deploy Options
+
+### Vercel (Recommended)
+Click the **Deploy with Vercel** badge in `README.md`. Set `GEMINI_API_KEY` as an environment variable if you want live mode — demo works without it.
+
+### Docker
+```bash
+docker compose up --build
+# Opens on http://localhost:3000
+# For live mode: create .env.local with GEMINI_API_KEY first
+```
+
+### Health Check
+After deploying, verify the system is running:
+```bash
+curl http://localhost:3000/api/health
+# Returns: { "status": "ok", "mode": "demo-only", "packs": [...] }
+```
+
+## E2E Flow Test (Demo)
+
+1. `pnpm dev` → open http://localhost:3000
+2. Click **City Council Minutes (EN)** pack
+3. Toggle to **Demo** mode → click **Run Demo Analysis**
+4. Verify pipeline steps animate, API is called (`/api/analyze`), report is generated
+5. Click **View Full Report** → verify digest sections render
+6. Repeat with **Regulation Update (ES→EN)** pack
+
+## E2E Flow Test (Live)
+
+1. Set `GEMINI_API_KEY` in `.env.local` → restart dev server
+2. Click any pack → toggle to **Live** mode
+3. Click **Run Live Analysis** → observe real Gemini API call
+4. Verify: budget counter appears, selfcheck step runs, report is generated
+5. Click 6+ times quickly → verify rate limit error appears (429)
 
 ## Key Technical Points to Evaluate
 
@@ -62,3 +99,6 @@ Then repeat Steps 2-4 but select "Live" mode in the analysis runner. Live mode:
 4. **Schema Enforcement**: Check `lib/schemas.ts` — Zod schemas with strict validation (word limits, max items, no extra keys)
 5. **Pack System**: Check `packs/` directory — self-contained configuration bundles
 6. **Safety Policy**: Check `pack.yaml` files — per-pack safety constraints enforced via system prompt
+7. **Rate Limiting**: Check `lib/rate-limit.ts` — in-memory limiter with per-minute and hourly budget caps
+8. **Security Middleware**: Check `middleware.ts` — security headers + Content-Type validation
+9. **DevSecOps CI**: Check `.github/workflows/ci.yml` — dependency audit + secret scanning

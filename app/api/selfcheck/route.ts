@@ -4,6 +4,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { validateDigest, validateSelfcheck } from "@/lib/schemas"
 import type { Digest } from "@/lib/schemas"
+import { checkRateLimit, getClientId, RATE_LIMITS } from "@/lib/rate-limit"
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,6 +13,16 @@ export async function POST(request: NextRequest) {
 
     if (!digest) {
       return NextResponse.json({ error: "digest is required" }, { status: 400 })
+    }
+
+    // Rate limit
+    const clientId = getClientId(request)
+    const rl = checkRateLimit(`selfcheck:${clientId}`, RATE_LIMITS.selfcheck())
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: "Rate limit exceeded. Try again shortly.", retryAfterMs: rl.retryAfterMs },
+        { status: 429, headers: { "Retry-After": String(Math.ceil(rl.retryAfterMs / 1000)) } }
+      )
     }
 
     // Local validation first

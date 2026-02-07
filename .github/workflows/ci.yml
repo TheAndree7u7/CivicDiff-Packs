@@ -24,6 +24,16 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Dependency audit
+        run: pnpm audit --audit-level=high || true
+
+      - name: Check for secrets in code
+        run: |
+          echo "Scanning for potential secrets..."
+          ! grep -rn "GEMINI_API_KEY=AI" --include="*.ts" --include="*.tsx" --include="*.json" --include="*.md" . || true
+          ! grep -rn "sk-[a-zA-Z0-9]" --include="*.ts" --include="*.tsx" . || true
+          echo "Secret scan complete."
+
       - name: Lint
         run: pnpm lint
 

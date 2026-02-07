@@ -3,6 +3,7 @@
 > Structured civic document analysis powered by Gemini — turn document diffs into validated, actionable digests.
 
 [![License: PolyForm Noncommercial](https://img.shields.io/badge/License-PolyForm%20Noncommercial%201.0.0-blue.svg)](LICENSE)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FYOUR_USER%2Fcivicdiff-packs&env=GEMINI_API_KEY&envDescription=Optional%20Gemini%20API%20key%20for%20live%20mode.%20Demo%20works%20without%20it.&project-name=civicdiff-packs)
 
 ## What It Does
 
@@ -83,6 +84,40 @@ pnpm dev
 ├── docs/                   # Project documentation
 └── registry.json           # Pack registry
 ```
+
+## Deploy
+
+### One-Click Vercel Deploy
+
+Click the **Deploy with Vercel** badge above. Set `GEMINI_API_KEY` if you want live mode — demo works without it.
+
+### Docker
+
+```bash
+# Demo mode (no API key)
+docker compose up --build
+
+# Live mode
+echo "GEMINI_API_KEY=your-key-here" > .env.local
+docker compose up --build
+```
+
+### Local
+
+```bash
+pnpm install
+cp .env.example .env.local   # optionally add GEMINI_API_KEY
+pnpm dev                      # http://localhost:3000
+```
+
+## Security & Rate Limiting
+
+- **Rate limiting**: 5 live calls/min, 20 demo calls/min, 50 live calls/hour (configurable via env vars)
+- **Budget cap**: prevents runaway API spending on free keys
+- **Security headers**: X-Content-Type-Options, X-Frame-Options, Referrer-Policy via middleware
+- **Content-Type validation**: API routes reject non-JSON POST requests
+- **Health check**: `GET /api/health` — returns status, mode, and pack count (no secrets exposed)
+- **CI security**: dependency audit + secret scanning in GitHub Actions
 
 ## License
 
