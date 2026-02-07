@@ -4,10 +4,20 @@
 import { GoogleGenAI, Type } from "@google/genai"
 import type { Digest, Selfcheck } from "../shared/schemas"
 
+// ── Supported Models ───────────────────────────────────────────
+export const SUPPORTED_MODELS = [
+  { id: "gemini-2.5-flash-lite", label: "Gemini 2.5 Flash Lite", tier: "free", description: "Fast & free — best for most use cases" },
+  { id: "gemini-2.5-flash-preview-05-20", label: "Gemini 2.5 Flash", tier: "free", description: "More capable, still free tier" },
+  { id: "gemini-2.0-flash", label: "Gemini 2.0 Flash", tier: "free", description: "Previous generation (may have quota limits)" },
+  { id: "gemini-2.5-pro-preview-06-05", label: "Gemini 2.5 Pro", tier: "paid", description: "Most capable — requires paid plan" },
+] as const
+
+export type SupportedModelId = (typeof SUPPORTED_MODELS)[number]["id"]
+
 // ── Configuration ──────────────────────────────────────────────
 export function getGeminiConfig() {
   const apiKey = process.env.GEMINI_API_KEY || ""
-  const model = process.env.GEMINI_MODEL || "gemini-2.0-flash"
+  const model = process.env.GEMINI_MODEL || "gemini-2.5-flash-lite"
   const thinkingLevel = (process.env.THINKING_LEVEL || "medium") as "medium" | "high"
   return { apiKey, model, thinkingLevel, hasKey: apiKey.length > 0 }
 }

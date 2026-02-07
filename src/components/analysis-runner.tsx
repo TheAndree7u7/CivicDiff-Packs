@@ -30,6 +30,13 @@ import {
 } from "@/components/ui/tooltip"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Progress } from "@/components/ui/progress"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { cn } from "@/lib/client/utils"
 import { toast } from "sonner"
 import type { Pack, Report } from "@/lib/client/mock-data"
@@ -70,6 +77,9 @@ export function AnalysisRunner({
   const router = useRouter()
   const [mode, setMode] = useState<"demo" | "live">("demo")
   const [thinkingLevel, setThinkingLevel] = useState<"medium" | "high">("medium")
+  const [selectedModel, setSelectedModel] = useState<string>("gemini-2.5-flash-lite")
+  const [availableModels, setAvailableModels] = useState<Array<{ id: string; label: string; tier: string; description: string }>>([])
+  const [hasApiKey, setHasApiKey] = useState(false)
   const [isRunning, setIsRunning] = useState(false)
   const [steps, setSteps] = useState<PipelineStep[]>(DEMO_STEPS)
   const [resultReportId, setResultReportId] = useState<string | null>(null)
@@ -80,6 +90,18 @@ export function AnalysisRunner({
   const [budgetInfo, setBudgetInfo] = useState<{ used: number; max: number; remaining: number } | null>(null)
   const logsEndRef = useRef<HTMLDivElement>(null)
   const abortRef = useRef<AbortController | null>(null)
+
+  // Load config from API on mount
+  useEffect(() => {
+    fetch("/api/config")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.models) setAvailableModels(data.models)
+        if (data.defaultModel) setSelectedModel(data.defaultModel)
+        if (data.hasApiKey) setHasApiKey(data.hasApiKey)
+      })
+      .catch(() => {})
+  }, [])
 
   useEffect(() => {
     if (logsEndRef.current) {
@@ -120,7 +142,7 @@ export function AnalysisRunner({
     setSteps(currentSteps.map((s) => ({ ...s, status: "pending", duration: undefined, error: undefined })))
 
     addLog(`Pack: ${pack.name}`)
-    addLog(`Mode: ${mode} | Thinking: ${thinkingLevel}`)
+    addLog(`Mode: ${mode} | Model: ${selectedModel} | Thinking: ${thinkingLevel}`)
     addLog("---")
 
     // Animate initial steps quickly
@@ -149,6 +171,7 @@ export function AnalysisRunner({
         body: JSON.stringify({
           packId: pack.id,
           mode,
+          model: selectedModel,
           thinkingLevel,
           useAgentic: false,
         }),
@@ -369,6 +392,53 @@ export function AnalysisRunner({
               </TooltipProvider>
             </div>
           </div>
+
+          {/* Model selector (live mode only) */}
+          {mode === "live" && availableModels.length > 0 && (
+            <div className="space-y-2">
+              <label className="text-xs font-medium text-foreground">
+                Gemini Model
+              </label>
+              <Select value={selectedModel} onValueChange={setSelectedModel} disabled={isRunning}>
+                <SelectTrigger className="h-8 text-xs">
+                  <SelectValue placeholder="Select model" />
+                </SelectTrigger>
+                <SelectContent>
+                  {availableModels.map((m) => (
+                    <SelectItem key={m.id} value={m.id} className="text-xs">
+                      <div className="flex items-center gap-2">
+                        <span>{m.label}</span>
+                        <Badge
+                          variant="outline"
+                          className={cn(
+                            "h-4 px-1 text-[9px] font-normal",
+                            m.tier === "free"
+                              ? "bg-accent/15 text-accent border-accent/30"
+                              : "bg-chart-3/15 text-chart-3 border-chart-3/30"
+                          )}
+                        >
+                          {m.tier}
+                        </Badge>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="text-[10px] text-muted-foreground">
+                {availableModels.find((m) => m.id === selectedModel)?.description}
+              </p>
+            </div>
+          )}
+
+          {/* API key status */}
+          {mode === "live" && !hasApiKey && (
+            <Alert className="border-destructive/30 bg-destructive/5">
+              <AlertTriangle className="h-4 w-4 text-destructive" />
+              <AlertDescription className="text-xs text-destructive">
+                No API key detected. Set <code className="font-mono text-[10px] bg-muted px-1 rounded">GEMINI_API_KEY</code> in your <code className="font-mono text-[10px] bg-muted px-1 rounded">.env.local</code> file.
+              </AlertDescription>
+            </Alert>
+          )}
 
           {/* Cost estimate for live mode */}
           {mode === "live" && (
