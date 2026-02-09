@@ -31,6 +31,8 @@ import {
 } from "@/components/ui/table"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AnalysisRunner } from "@/components/analysis-runner"
+import { SideBySideDiff } from "@/components/side-by-side-diff"
+import { PdfExportButton } from "@/components/pdf-export"
 import type { Pack, Report } from "@/lib/client/mock-data"
 
 const statusConfig = {
@@ -179,6 +181,7 @@ export function PackDetailContent({
               )}
             </TabsTrigger>
             <TabsTrigger value="schema">Schema</TabsTrigger>
+            <TabsTrigger value="compare">Compare</TabsTrigger>
             <TabsTrigger value="reports">
               Reports
               {reports.length > 0 && (
@@ -315,6 +318,30 @@ export function PackDetailContent({
             </Card>
           </TabsContent>
 
+          <TabsContent value="compare" className="space-y-4">
+            {(() => {
+              const oldSrc = pack.sources.find((s) => s.type === "old")
+              const newSrc = pack.sources.find((s) => s.type === "new")
+              if (oldSrc && newSrc) {
+                return (
+                  <SideBySideDiff
+                    oldText={oldSrc.excerpt}
+                    newText={newSrc.excerpt}
+                    oldLabel={oldSrc.label}
+                    newLabel={newSrc.label}
+                  />
+                )
+              }
+              return (
+                <Card>
+                  <CardContent className="py-12 text-center text-muted-foreground">
+                    <p className="text-sm">Both old and new source documents are required for comparison.</p>
+                  </CardContent>
+                </Card>
+              )
+            })()}
+          </TabsContent>
+
           <TabsContent value="reports" className="space-y-4">
             {reports.length === 0 ? (
               <Card>
@@ -380,12 +407,19 @@ export function PackDetailContent({
                             </span>
                           </TableCell>
                           <TableCell className="text-right">
-                            <Button size="sm" variant="ghost" asChild>
-                              <Link href={`/reports/${report.id}`}>
-                                View
-                                <ArrowRight className="ml-1 h-3 w-3" />
-                              </Link>
-                            </Button>
+                            <div className="flex items-center justify-end gap-1">
+                              <PdfExportButton
+                                digest={report.digest}
+                                packName={report.packName}
+                                reportId={report.id}
+                              />
+                              <Button size="sm" variant="ghost" asChild>
+                                <Link href={`/reports/${report.id}`}>
+                                  View
+                                  <ArrowRight className="ml-1 h-3 w-3" />
+                                </Link>
+                              </Button>
+                            </div>
                           </TableCell>
                         </TableRow>
                       ))}

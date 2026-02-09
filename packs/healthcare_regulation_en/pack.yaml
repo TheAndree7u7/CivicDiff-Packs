@@ -1,0 +1,18 @@
+id: healthcare_regulation_en
+name: "Healthcare Regulation Updates (EN)"
+description: "Analyzes changes in healthcare compliance regulations, HIPAA updates, and patient safety policies."
+languages:
+  - en
+tags:
+  - healthcare
+  - hipaa
+  - compliance
+  - patient-safety
+safety_policy: "Do not include any protected health information (PHI). Flag patient safety concerns with HIGH impact."
+output_constraints:
+  max_executive_summary_words: 60
+  max_what_changed_items: 7
+  max_deadlines: 7
+  max_action_items: 7
+  max_risk_flags: 5
+  max_evidence_per_item: 5

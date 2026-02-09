@@ -511,18 +511,22 @@ export function AnalysisRunner({
             disabled={isDisabled}
             size="lg"
           >
-            {isRunning ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : mode === "live" ? (
-              <Radio className="h-4 w-4" />
-            ) : (
-              <Play className="h-4 w-4" />
-            )}
-            {isRunning
-              ? "Running Pipeline..."
-              : mode === "live"
-                ? "Run Live Analysis"
-                : "Run Demo Analysis"}
+            <span className="flex items-center gap-2">
+              {isRunning ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : mode === "live" ? (
+                <Radio className="h-4 w-4" />
+              ) : (
+                <Play className="h-4 w-4" />
+              )}
+              <span>
+                {isRunning
+                  ? "Running Pipeline..."
+                  : mode === "live"
+                    ? "Run Live Analysis"
+                    : "Run Demo Analysis"}
+              </span>
+            </span>
           </Button>
 
           {/* Status messages */}

@@ -1,0 +1,119 @@
+{
+  "executive_summary": "Healthcare framework v4.0 significantly expands telehealth to all visit types including AI-assisted triage, upgrades encryption to AES-256, reduces breach notification to 30 days, mandates real-time safety reporting, improves nurse ratios to 1:4, doubles audit penalties, and introduces AI governance and price transparency requirements.",
+  "what_changed": [
+    {
+      "change": "Telehealth expanded to all visit types including initial consultations; audio-only permitted for behavioral health; AI-assisted triage allowed with physician oversight",
+      "impact": "high",
+      "evidence": ["src-new:section-4.1-telehealth", "src-diff:telehealth-expansion"]
+    },
+    {
+      "change": "Data security upgraded: AES-256 encryption, MFA required, breach notification reduced from 60 to 30 days, audit logs extended to 6 years",
+      "impact": "high",
+      "evidence": ["src-new:section-4.2-security", "src-diff:encryption-upgrade"]
+    },
+    {
+      "change": "Adverse event reporting reduced from 72 to 24 hours; near-miss reporting now mandatory and real-time",
+      "impact": "high",
+      "evidence": ["src-new:section-4.3-safety", "src-diff:adverse-events"]
+    },
+    {
+      "change": "Nurse-to-patient ratio improved from 1:6 to 1:4 for medical-surgical units; 24/7 physician availability required",
+      "impact": "high",
+      "evidence": ["src-new:section-4.4-staffing", "src-diff:nurse-ratio"]
+    },
+    {
+      "change": "AI governance requirements: clinical AI must have bias audit and explainability documentation",
+      "impact": "high",
+      "evidence": ["src-new:section-4.2-ai-governance"]
+    },
+    {
+      "change": "Fraud penalties doubled to $100K per incident; audit sample doubled to 10%; claim deadline shortened to 60 days",
+      "impact": "med",
+      "evidence": ["src-new:section-4.5-billing", "src-diff:penalties"]
+    },
+    {
+      "change": "Price transparency and surprise billing protections mandated",
+      "impact": "med",
+      "evidence": ["src-new:section-4.5-transparency"]
+    }
+  ],
+  "deadlines": [
+    {
+      "date": "2026-03-01",
+      "item": "Framework v4.0 effective date — all provisions in force",
+      "owner": "All healthcare providers",
+      "evidence": ["src-new:effective-date"]
+    },
+    {
+      "date": "2027-03-01",
+      "item": "FHIR R4 API patient data portability implementation deadline",
+      "owner": "IT/Health Informatics",
+      "evidence": ["src-new:section-4.2-fhir"]
+    },
+    {
+      "date": "2026-09-01",
+      "item": "First semi-annual risk assessment due under new schedule",
+      "owner": "Compliance Department",
+      "evidence": ["src-new:section-4.2-risk"]
+    }
+  ],
+  "action_checklist": [
+    {
+      "action": "Upgrade all systems to AES-256 encryption and implement MFA for all access points",
+      "priority": "P0",
+      "evidence": ["src-new:section-4.2-security"]
+    },
+    {
+      "action": "Implement 24-hour adverse event reporting system replacing 72-hour workflow",
+      "priority": "P0",
+      "evidence": ["src-new:section-4.3-safety"]
+    },
+    {
+      "action": "Begin hiring to meet 1:4 nurse-to-patient ratio requirement",
+      "priority": "P0",
+      "evidence": ["src-new:section-4.4-staffing"]
+    },
+    {
+      "action": "Audit all clinical AI systems for bias and create explainability documentation",
+      "priority": "P1",
+      "evidence": ["src-new:section-4.2-ai-governance"]
+    },
+    {
+      "action": "Update telehealth platform to support audio-only visits and RPM capabilities",
+      "priority": "P1",
+      "evidence": ["src-new:section-4.1-telehealth"]
+    },
+    {
+      "action": "Publish machine-readable pricing files for price transparency compliance",
+      "priority": "P2",
+      "evidence": ["src-new:section-4.5-transparency"]
+    }
+  ],
+  "risk_flags": [
+    {
+      "flag": "Nurse staffing shortage for 1:4 ratio",
+      "why": "Improving from 1:6 to 1:4 requires 50% more nursing staff. Current shortage may make compliance extremely difficult.",
+      "evidence": ["src-new:section-4.4-staffing"]
+    },
+    {
+      "flag": "AI governance compliance gap",
+      "why": "Many clinical AI systems lack formal bias audits. 12-month timeline for full compliance may be insufficient for complex ML models.",
+      "evidence": ["src-new:section-4.2-ai-governance"]
+    },
+    {
+      "flag": "30-day breach notification extremely tight",
+      "why": "Halving the notification window from 60 to 30 days leaves minimal time for forensic investigation before mandatory disclosure.",
+      "evidence": ["src-diff:breach-notification"]
+    }
+  ],
+  "provenance": [
+    { "source_id": "src-old", "location": "Framework v3.2 Sections 4.1-4.5", "type": "old" },
+    { "source_id": "src-new", "location": "Framework v4.0 Sections 4.1-4.5", "type": "new" },
+    { "source_id": "src-diff", "location": "All sections with changes", "type": "diff" }
+  ],
+  "meta": {
+    "mode": "demo",
+    "model": "gemini-2.0-flash",
+    "token_estimate": "~6,200 tokens"
+  }
+}

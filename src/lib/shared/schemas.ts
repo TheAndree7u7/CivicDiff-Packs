@@ -3,7 +3,7 @@
 
 import { z } from "zod"
 
-export const EvidenceSchema = z.array(z.string()).max(2)
+export const EvidenceSchema = z.array(z.string()).max(5)
 
 export const WhatChangedItemSchema = z.object({
   change: z.string(),

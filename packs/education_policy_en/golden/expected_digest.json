@@ -1,0 +1,125 @@
+{
+  "executive_summary": "Lincoln USD adopted sweeping reforms: Computer Science and AI Literacy added as core/elective subjects, 1:1 Chromebook program launched, class sizes reduced to 25, professional development doubled to 40 hours with mandatory tech training, per-pupil spending increased 25%, and special education shifted to full inclusion model.",
+  "what_changed": [
+    {
+      "change": "Computer Science added as core subject and AI Literacy as elective; 1:1 Chromebook program replaces computer labs for grades 3-12",
+      "impact": "high",
+      "evidence": ["src-new:policy-6140-tech", "src-diff:technology-integration"]
+    },
+    {
+      "change": "Class size maximum reduced from 30 to 25 students per classroom",
+      "impact": "high",
+      "evidence": ["src-diff:class-size", "src-new:policy-6140-class"]
+    },
+    {
+      "change": "Professional development doubled from 20 to 40 hours annually with 10 hours mandatory tech/AI training",
+      "impact": "high",
+      "evidence": ["src-new:policy-4112-pd", "src-diff:staff-development"]
+    },
+    {
+      "change": "Per-pupil spending increased from $9,200 to $11,500; technology budget 5x increase to $750,000",
+      "impact": "high",
+      "evidence": ["src-new:policy-3100-budget", "src-diff:budget-allocation"]
+    },
+    {
+      "change": "Special education shifted from pull-out to full inclusion model with push-in services; IEP reviews now semi-annual",
+      "impact": "high",
+      "evidence": ["src-new:policy-6163-inclusion", "src-diff:special-ed"]
+    },
+    {
+      "change": "Comprehensive anti-bullying and cyberbullying policy including social media conduct; mental health screening for grades 6-12",
+      "impact": "high",
+      "evidence": ["src-new:policy-5131-safety", "src-diff:student-conduct"]
+    },
+    {
+      "change": "Cell phone policy strengthened to full-day collection; lockdown drills increased to monthly; threat assessment teams established",
+      "impact": "med",
+      "evidence": ["src-new:policy-5131-phones", "src-diff:emergency-drills"]
+    }
+  ],
+  "deadlines": [
+    {
+      "date": "2026-08-15",
+      "item": "1:1 Chromebook deployment for all grades 3-12 before fall semester",
+      "owner": "Technology Department",
+      "evidence": ["src-new:policy-6140-tech"]
+    },
+    {
+      "date": "2026-06-30",
+      "item": "All teachers complete 10-hour AI/technology training module",
+      "owner": "Human Resources",
+      "evidence": ["src-new:policy-4112-pd"]
+    },
+    {
+      "date": "2026-04-01",
+      "item": "Mental health screening program operational for grades 6-12",
+      "owner": "Student Services",
+      "evidence": ["src-new:policy-5131-mental"]
+    },
+    {
+      "date": "2026-09-01",
+      "item": "Full inclusion model implemented for all IEP students",
+      "owner": "Special Education Department",
+      "evidence": ["src-new:policy-6163-inclusion"]
+    }
+  ],
+  "action_checklist": [
+    {
+      "action": "Procure and deploy Chromebooks for 1:1 program — estimated 3,000+ devices needed",
+      "priority": "P0",
+      "evidence": ["src-new:policy-6140-tech"]
+    },
+    {
+      "action": "Hire additional teachers to meet new 1:25 staff ratio and reduced class sizes",
+      "priority": "P0",
+      "evidence": ["src-new:policy-4112-ratio", "src-new:policy-6140-class"]
+    },
+    {
+      "action": "Develop and schedule 40-hour professional development curriculum with tech component",
+      "priority": "P0",
+      "evidence": ["src-new:policy-4112-pd"]
+    },
+    {
+      "action": "Establish threat assessment teams at each school site",
+      "priority": "P1",
+      "evidence": ["src-new:policy-5131-threat"]
+    },
+    {
+      "action": "Transition special education from pull-out to push-in model with staff retraining",
+      "priority": "P1",
+      "evidence": ["src-new:policy-6163-inclusion"]
+    },
+    {
+      "action": "Implement digital citizenship curriculum across all grade levels",
+      "priority": "P2",
+      "evidence": ["src-new:policy-6140-digital"]
+    }
+  ],
+  "risk_flags": [
+    {
+      "flag": "Significant budget pressure from simultaneous reforms",
+      "why": "Per-pupil increase of $2,300, 5x technology budget, $200K mental health, $5K STEM bonuses — total new spending may exceed $3M annually.",
+      "evidence": ["src-new:policy-3100-budget"]
+    },
+    {
+      "flag": "Teacher shortage risk from reduced class sizes",
+      "why": "Reducing max class size from 30 to 25 requires ~20% more classrooms and teachers. Current hiring market may not support rapid staffing.",
+      "evidence": ["src-diff:class-size"]
+    },
+    {
+      "flag": "Full inclusion model transition complexity",
+      "why": "Shifting from pull-out to push-in services requires retraining all special education staff and general education teachers simultaneously.",
+      "evidence": ["src-new:policy-6163-inclusion"]
+    }
+  ],
+  "provenance": [
+    { "source_id": "src-old", "location": "Policies 6140, 5131, 4112, 3100, 6163 — December 2025", "type": "old" },
+    { "source_id": "src-new", "location": "Policies 6140, 5131, 4112, 3100, 6163 — February 2026 amendments", "type": "new" },
+    { "source_id": "src-diff", "location": "All policy sections with changes", "type": "diff" }
+  ],
+  "meta": {
+    "mode": "demo",
+    "model": "gemini-2.0-flash",
+    "token_estimate": "~5,800 tokens"
+  }
+}

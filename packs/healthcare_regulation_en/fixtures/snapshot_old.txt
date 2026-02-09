@@ -1,0 +1,35 @@
+STATE HEALTHCARE COMPLIANCE FRAMEWORK — Version 3.2
+Effective: January 1, 2025
+
+Section 4.1 — TELEHEALTH SERVICES
+- Telehealth permitted for follow-up visits only
+- Video consultation required (audio-only not permitted)
+- Provider must be licensed in patient's state
+- Prescriptions via telehealth: Established patients only
+- Documentation: Standard visit notes required
+
+Section 4.2 — DATA SECURITY (HIPAA Aligned)
+- Encryption: AES-128 minimum for data at rest
+- Access controls: Role-based access required
+- Audit logs: Retained for 3 years
+- Breach notification: Within 60 days of discovery
+- Risk assessment: Annual requirement
+- Business Associate Agreements: Required for all vendors
+
+Section 4.3 — PATIENT SAFETY REPORTING
+- Adverse events: Report within 72 hours
+- Near-miss reporting: Voluntary, quarterly summary
+- Root cause analysis: Required for sentinel events
+- Patient safety committee: Quarterly meetings
+
+Section 4.4 — STAFFING REQUIREMENTS
+- Nurse-to-patient ratio: 1:6 for medical-surgical units
+- Physician supervision: On-site during operating hours
+- Continuing education: 30 hours annually per clinician
+- Credentialing: Every 3 years
+
+Section 4.5 — BILLING AND COMPLIANCE
+- Claim submission deadline: 90 days from service
+- Prior authorization: Required for specialty referrals
+- Audit frequency: Random 5% sample annually
+- Penalty for fraudulent claims: Up to $50,000 per incident

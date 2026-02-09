@@ -1,0 +1,1 @@
+Analyze the diff between two versions of a healthcare regulation document. Produce a structured JSON digest with: executive_summary (max 60 words), what_changed (max 7, with impact high/med/low), deadlines (max 7), action_checklist (max 7, priority P0/P1/P2), risk_flags (max 5), provenance, and meta.

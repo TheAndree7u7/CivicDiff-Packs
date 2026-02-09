@@ -1,0 +1,45 @@
+STATE HEALTHCARE COMPLIANCE FRAMEWORK — Version 4.0
+Effective: March 1, 2026
+
+Section 4.1 — TELEHEALTH SERVICES (Expanded)
+- Telehealth permitted for ALL visit types including initial consultations (expanded)
+- Audio-only visits permitted for behavioral health and rural patients (NEW)
+- Provider must be licensed in patient's state OR hold interstate compact license (expanded)
+- Prescriptions via telehealth: All patients including new patients with proper verification (expanded)
+- Documentation: Enhanced telehealth-specific notes with technology verification
+- NEW: Remote patient monitoring (RPM) covered for chronic conditions
+- NEW: AI-assisted triage permitted with physician oversight
+
+Section 4.2 — DATA SECURITY (HIPAA+ Enhanced)
+- Encryption: AES-256 minimum for data at rest (upgraded from AES-128)
+- Access controls: Role-based + multi-factor authentication required (enhanced)
+- Audit logs: Retained for 6 years (increased from 3)
+- Breach notification: Within 30 days of discovery (reduced from 60)
+- Risk assessment: Semi-annual requirement (increased from annual)
+- Business Associate Agreements: Required + annual security attestation (enhanced)
+- NEW: AI model governance — all clinical AI must have bias audit and explainability documentation
+- NEW: Patient data portability — support FHIR R4 API within 12 months
+
+Section 4.3 — PATIENT SAFETY REPORTING (Strengthened)
+- Adverse events: Report within 24 hours (reduced from 72)
+- Near-miss reporting: MANDATORY real-time reporting (changed from voluntary)
+- Root cause analysis: Required for sentinel events + serious safety events (expanded)
+- Patient safety committee: Monthly meetings (increased from quarterly)
+- NEW: Patient safety dashboard — real-time incident tracking required
+- NEW: Transparency reporting — annual public safety report required
+
+Section 4.4 — STAFFING REQUIREMENTS (Enhanced)
+- Nurse-to-patient ratio: 1:4 for medical-surgical units (improved from 1:6)
+- Physician supervision: 24/7 availability required (expanded from operating hours)
+- Continuing education: 40 hours annually per clinician (increased from 30)
+- Credentialing: Every 2 years (shortened from 3)
+- NEW: Burnout prevention — mandatory wellness program for all clinical staff
+- NEW: Diversity requirements — cultural competency training 8 hours annually
+
+Section 4.5 — BILLING AND COMPLIANCE (Tightened)
+- Claim submission deadline: 60 days from service (reduced from 90)
+- Prior authorization: AI-assisted pre-auth permitted; decision within 48 hours (NEW timeline)
+- Audit frequency: Random 10% sample annually (doubled from 5%)
+- Penalty for fraudulent claims: Up to $100,000 per incident (doubled)
+- NEW: Price transparency — machine-readable pricing files required
+- NEW: Surprise billing protections — no balance billing for emergency services

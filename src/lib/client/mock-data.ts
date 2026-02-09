@@ -181,6 +181,126 @@ export const packs: Pack[] = [
       },
     },
   },
+  {
+    id: "education_policy_en",
+    name: "Education Policy Updates (EN)",
+    description:
+      "Analyzes changes in school board policies, curriculum updates, and education regulations. Detects funding shifts, staffing changes, and technology integration mandates.",
+    languages: ["en"],
+    tags: ["education", "school-board", "curriculum", "policy"],
+    mode: "live-capable",
+    status: "ready",
+    lastUpdated: "2026-02-11",
+    inputSizeEstimate: "~10KB per snapshot",
+    outputSchemaVersion: "v1.0",
+    longDescription:
+      "This pack compares consecutive school board policy documents to identify curriculum changes, staffing updates, budget reallocations, student safety improvements, and technology integration mandates. It produces structured digests with full provenance.",
+    extractionDetails: [
+      "Curriculum and academic requirement changes",
+      "Student safety and welfare policy updates",
+      "Funding and budget allocation changes",
+      "Staff development and evaluation modifications",
+      "Technology and digital learning policy shifts",
+      "Special education and inclusion updates",
+    ],
+    sources: [
+      {
+        id: "src-old",
+        label: "Board Policies (Dec 10, 2025)",
+        type: "old",
+        excerpt:
+          "LINCOLN UNIFIED SCHOOL DISTRICT\nBOARD OF EDUCATION — December 10, 2025\n\nPolicy 6140 — CURRICULUM: Core subjects, 1 computer lab per school, class size max 30\nPolicy 5131 — SAFETY: Annual bullying awareness week, phones prohibited during instruction\nPolicy 4112 — STAFF: 20 hours PD annually, 1:25 ratio\nPolicy 3100 — BUDGET: $9,200 per pupil, $150K technology",
+      },
+      {
+        id: "src-new",
+        label: "Board Policies (Feb 11, 2026)",
+        type: "new",
+        excerpt:
+          "LINCOLN UNIFIED SCHOOL DISTRICT\nBOARD OF EDUCATION — February 11, 2026\n\nPolicy 6140 — CURRICULUM (Amended): Computer Science core, AI Literacy elective, 1:1 Chromebooks, class max 25\nPolicy 5131 — SAFETY (Amended): Cyberbullying policy, mental health screening, threat assessment teams\nPolicy 4112 — STAFF (Amended): 40 hours PD, AI training required, 1:22 ratio\nPolicy 3100 — BUDGET (Amended): $11,500 per pupil, $750K technology, $200K mental health",
+      },
+      {
+        id: "src-diff",
+        label: "Computed Diff",
+        type: "diff",
+        excerpt:
+          "- 1 computer lab per school\n+ 1:1 Chromebook program grades 3-12\n- Class size: max 30\n+ Class size: max 25\n- PD: 20 hours annually\n+ PD: 40 hours (10 tech-focused)\n- Per pupil: $9,200\n+ Per pupil: $11,500\n+ NEW: Computer Science core subject\n+ NEW: AI Literacy elective\n+ NEW: Cyberbullying policy\n+ NEW: Mental health screening grades 6-12",
+      },
+    ],
+    schema: {
+      type: "object",
+      required: ["executive_summary", "what_changed", "deadlines", "action_checklist", "risk_flags", "provenance", "meta"],
+      additionalProperties: false,
+      properties: {
+        executive_summary: { type: "string", description: "Max 60 words" },
+        what_changed: { type: "array", maxItems: 7 },
+        deadlines: { type: "array", maxItems: 7 },
+        action_checklist: { type: "array", maxItems: 7 },
+        risk_flags: { type: "array", maxItems: 5 },
+        provenance: { type: "array" },
+        meta: { type: "object" },
+      },
+    },
+  },
+  {
+    id: "healthcare_regulation_en",
+    name: "Healthcare Regulation Updates (EN)",
+    description:
+      "Analyzes changes in healthcare compliance regulations, HIPAA updates, telehealth expansion, and patient safety policies.",
+    languages: ["en"],
+    tags: ["healthcare", "hipaa", "compliance", "patient-safety"],
+    mode: "live-capable",
+    status: "ready",
+    lastUpdated: "2026-02-09",
+    inputSizeEstimate: "~14KB per snapshot",
+    outputSchemaVersion: "v1.0",
+    longDescription:
+      "This pack processes healthcare regulatory framework updates and produces structured digests covering telehealth changes, data security upgrades, patient safety reporting, staffing requirements, and billing compliance. Ideal for compliance officers and healthcare administrators.",
+    extractionDetails: [
+      "Telehealth service scope changes",
+      "Data security and encryption requirements",
+      "Patient safety reporting modifications",
+      "Staffing ratio and credential changes",
+      "Billing and audit frequency updates",
+      "AI governance and transparency requirements",
+    ],
+    sources: [
+      {
+        id: "src-old",
+        label: "Framework v3.2 (Jan 1, 2025)",
+        type: "old",
+        excerpt:
+          "STATE HEALTHCARE COMPLIANCE FRAMEWORK — Version 3.2\n\nSection 4.1 — TELEHEALTH: Follow-up visits only, video required\nSection 4.2 — DATA SECURITY: AES-128, breach notify 60 days, annual risk assessment\nSection 4.3 — SAFETY: Adverse events 72 hours, voluntary near-miss\nSection 4.4 — STAFFING: Nurse ratio 1:6, 30 hours CE\nSection 4.5 — BILLING: 90-day claims, 5% audit",
+      },
+      {
+        id: "src-new",
+        label: "Framework v4.0 (Mar 1, 2026)",
+        type: "new",
+        excerpt:
+          "STATE HEALTHCARE COMPLIANCE FRAMEWORK — Version 4.0\n\nSection 4.1 — TELEHEALTH (Expanded): All visit types, audio-only permitted, AI triage allowed\nSection 4.2 — DATA SECURITY (HIPAA+): AES-256, breach notify 30 days, semi-annual risk, AI governance\nSection 4.3 — SAFETY (Strengthened): Adverse events 24 hours, mandatory near-miss, real-time dashboard\nSection 4.4 — STAFFING (Enhanced): Nurse ratio 1:4, 40 hours CE, burnout prevention\nSection 4.5 — BILLING (Tightened): 60-day claims, 10% audit, $100K penalties",
+      },
+      {
+        id: "src-diff",
+        label: "Computed Diff",
+        type: "diff",
+        excerpt:
+          "- Telehealth: follow-up only\n+ Telehealth: ALL visit types\n- AES-128 encryption\n+ AES-256 encryption\n- Breach notification: 60 days\n+ Breach notification: 30 days\n- Adverse events: 72 hours\n+ Adverse events: 24 hours\n- Nurse ratio: 1:6\n+ Nurse ratio: 1:4\n- Penalties: $50,000\n+ Penalties: $100,000\n+ NEW: AI governance requirements\n+ NEW: Price transparency mandate",
+      },
+    ],
+    schema: {
+      type: "object",
+      required: ["executive_summary", "what_changed", "deadlines", "action_checklist", "risk_flags", "provenance", "meta"],
+      additionalProperties: false,
+      properties: {
+        executive_summary: { type: "string", description: "Max 60 words" },
+        what_changed: { type: "array", maxItems: 7 },
+        deadlines: { type: "array", maxItems: 7 },
+        action_checklist: { type: "array", maxItems: 7 },
+        risk_flags: { type: "array", maxItems: 5 },
+        provenance: { type: "array" },
+        meta: { type: "object" },
+      },
+    },
+  },
 ]
 
 // ── Reports (Golden Demo Data) ────────────────────────────────

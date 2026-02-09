@@ -68,6 +68,33 @@ export async function loadPackData(packId: string): Promise<PackData> {
   }
 }
 
+// ── Evidence Truncation ────────────────────────────────────────
+// Gemini may return more evidence items than our Zod schema allows.
+// Truncate to MAX_EVIDENCE before validation to avoid spurious warnings.
+const MAX_EVIDENCE = 5
+
+function truncateEvidence(digest: Digest): Digest {
+  return {
+    ...digest,
+    what_changed: digest.what_changed.map((c) => ({
+      ...c,
+      evidence: c.evidence.slice(0, MAX_EVIDENCE),
+    })),
+    deadlines: digest.deadlines.map((d) => ({
+      ...d,
+      evidence: d.evidence.slice(0, MAX_EVIDENCE),
+    })),
+    action_checklist: digest.action_checklist.map((a) => ({
+      ...a,
+      evidence: a.evidence.slice(0, MAX_EVIDENCE),
+    })),
+    risk_flags: digest.risk_flags.map((r) => ({
+      ...r,
+      evidence: r.evidence.slice(0, MAX_EVIDENCE),
+    })),
+  }
+}
+
 // ── Demo Pipeline ──────────────────────────────────────────────
 export async function runDemoPipeline(packId: string): Promise<PipelineResult> {
   const steps: PipelineStep[] = [
@@ -175,6 +202,9 @@ export async function runLivePipeline(
     })
   }
   steps[3].status = "done"
+
+  // Truncate evidence arrays before validation (Gemini may exceed limits)
+  digest = truncateEvidence(digest)
 
   // Step 5: Validate
   steps[4].status = "running"

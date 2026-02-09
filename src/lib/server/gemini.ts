@@ -3,6 +3,8 @@
 
 import { GoogleGenAI, Type } from "@google/genai"
 import type { Digest, Selfcheck } from "../shared/schemas"
+import { isLoggingEnabled, addLogEntry, createLogEntry } from "./gemini-logger"
+import { estimateTokens } from "./diff"
 
 // ── Supported Models ───────────────────────────────────────────
 export const SUPPORTED_MODELS = [
@@ -248,21 +250,76 @@ ${params.diff}
 Important: Set meta.mode to "live", meta.model to "${modelName}", and estimate the token count.
 `
 
-  const response = await withRetry(() =>
-    client.models.generateContent({
-      model: modelName,
-      contents: [{ role: "user", parts: [{ text: userContent }] }],
-      config: {
-        systemInstruction: params.systemPrompt,
-        responseMimeType: "application/json",
-        responseSchema: digestResponseSchema,
-        temperature: 0.2,
-      },
-    })
-  )
+  const startTime = Date.now()
+  let rawText = ""
+  let error: string | null = null
 
-  const text = response.text || ""
-  return JSON.parse(text) as Digest
+  try {
+    const response = await withRetry(() =>
+      client.models.generateContent({
+        model: modelName,
+        contents: [{ role: "user", parts: [{ text: userContent }] }],
+        config: {
+          systemInstruction: params.systemPrompt,
+          responseMimeType: "application/json",
+          responseSchema: digestResponseSchema,
+          temperature: 0.2,
+        },
+      })
+    )
+
+    rawText = response.text || ""
+    const parsed = JSON.parse(rawText) as Digest
+
+    if (isLoggingEnabled()) {
+      addLogEntry(createLogEntry({
+        mode: "live",
+        model: modelName,
+        step: "digest",
+        packId: "unknown",
+        durationMs: Date.now() - startTime,
+        inputTokenEstimate: estimateTokens(userContent + params.systemPrompt),
+        outputTokenEstimate: estimateTokens(rawText),
+        status: "success",
+        request: {
+          systemPrompt: params.systemPrompt.slice(0, 500),
+          userContentPreview: userContent.slice(0, 500),
+          temperature: 0.2,
+          responseMimeType: "application/json",
+        },
+        response: {
+          rawText: rawText.slice(0, 5000),
+          parsedPreview: JSON.stringify(parsed, null, 2).slice(0, 2000),
+        },
+        error: null,
+      }))
+    }
+
+    return parsed
+  } catch (e) {
+    error = e instanceof Error ? e.message : String(e)
+    if (isLoggingEnabled()) {
+      addLogEntry(createLogEntry({
+        mode: "live",
+        model: modelName,
+        step: "digest",
+        packId: "unknown",
+        durationMs: Date.now() - startTime,
+        inputTokenEstimate: estimateTokens(userContent + params.systemPrompt),
+        outputTokenEstimate: 0,
+        status: "error",
+        request: {
+          systemPrompt: params.systemPrompt.slice(0, 500),
+          userContentPreview: userContent.slice(0, 500),
+          temperature: 0.2,
+          responseMimeType: "application/json",
+        },
+        response: rawText ? { rawText: rawText.slice(0, 5000), parsedPreview: "" } : null,
+        error,
+      }))
+    }
+    throw e
+  }
 }
 
 // ── Selfcheck Generation ───────────────────────────────────────
@@ -282,20 +339,73 @@ ${params.selfcheckPrompt}
 ${JSON.stringify(params.digest, null, 2)}
 `
 
-  const response = await withRetry(() =>
-    client.models.generateContent({
-      model: modelName,
-      contents: [{ role: "user", parts: [{ text: userContent }] }],
-      config: {
-        responseMimeType: "application/json",
-        responseSchema: selfcheckResponseSchema,
-        temperature: 0.1,
-      },
-    })
-  )
+  const startTime = Date.now()
+  let rawText = ""
 
-  const text = response.text || ""
-  return JSON.parse(text) as Selfcheck
+  try {
+    const response = await withRetry(() =>
+      client.models.generateContent({
+        model: modelName,
+        contents: [{ role: "user", parts: [{ text: userContent }] }],
+        config: {
+          responseMimeType: "application/json",
+          responseSchema: selfcheckResponseSchema,
+          temperature: 0.1,
+        },
+      })
+    )
+
+    rawText = response.text || ""
+    const parsed = JSON.parse(rawText) as Selfcheck
+
+    if (isLoggingEnabled()) {
+      addLogEntry(createLogEntry({
+        mode: "live",
+        model: modelName,
+        step: "selfcheck",
+        packId: "unknown",
+        durationMs: Date.now() - startTime,
+        inputTokenEstimate: estimateTokens(userContent),
+        outputTokenEstimate: estimateTokens(rawText),
+        status: "success",
+        request: {
+          systemPrompt: "",
+          userContentPreview: userContent.slice(0, 500),
+          temperature: 0.1,
+          responseMimeType: "application/json",
+        },
+        response: {
+          rawText: rawText.slice(0, 5000),
+          parsedPreview: JSON.stringify(parsed, null, 2).slice(0, 2000),
+        },
+        error: null,
+      }))
+    }
+
+    return parsed
+  } catch (e) {
+    if (isLoggingEnabled()) {
+      addLogEntry(createLogEntry({
+        mode: "live",
+        model: modelName,
+        step: "selfcheck",
+        packId: "unknown",
+        durationMs: Date.now() - startTime,
+        inputTokenEstimate: estimateTokens(userContent),
+        outputTokenEstimate: 0,
+        status: "error",
+        request: {
+          systemPrompt: "",
+          userContentPreview: userContent.slice(0, 500),
+          temperature: 0.1,
+          responseMimeType: "application/json",
+        },
+        response: rawText ? { rawText: rawText.slice(0, 5000), parsedPreview: "" } : null,
+        error: e instanceof Error ? e.message : String(e),
+      }))
+    }
+    throw e
+  }
 }
 
 // ── Agentic Tool-Calling Loop ──────────────────────────────────
@@ -340,7 +450,7 @@ Set meta.mode to "live" and meta.model to "${modelName}".
       contents,
       config: {
         systemInstruction: params.systemPrompt,
-        tools,
+        tools: tools as never,
         temperature: 0.2,
       },
     })
@@ -349,11 +459,11 @@ Set meta.mode to "live" and meta.model to "${modelName}".
     if (!candidate?.content?.parts) break
 
     const parts = candidate.content.parts
-    const functionCalls = parts.filter((p: Record<string, unknown>) => p.functionCall)
+    const functionCalls = parts.filter((p) => "functionCall" in p)
 
     if (functionCalls.length === 0) {
       // No more function calls — extract final text
-      const textPart = parts.find((p: Record<string, unknown>) => p.text)
+      const textPart = parts.find((p) => "text" in p)
       if (textPart && typeof textPart.text === "string") {
         const digest = JSON.parse(textPart.text) as Digest
         return { digest, toolCalls: toolCallLog }

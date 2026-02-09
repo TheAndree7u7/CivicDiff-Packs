@@ -23,6 +23,8 @@ Each analysis is driven by a **pack** — a self-contained configuration bundle 
 | `city_minutes_en` | City council meeting minutes & ordinances | EN |
 | `regulation_update_es_en` | Spanish regulatory documents → English digests | ES → EN |
 
+> **Try your own data!** Download a sample pack, modify it with your own documents, and re-upload to analyze.
+
 ## Quick Start
 
 ```bash
@@ -61,6 +63,13 @@ pnpm dev
 - **Self-Check** — Second Gemini call validates the primary output
 - **Large Context** — ~30KB input → ~2KB structured JSON output
 
+## New in v1.1
+
+- **Gemini API Logger** — Toggle on/off real-time logging of all Gemini API calls. View raw requests/responses, token counts, timing, and errors. Export logs as JSON.
+- **Pack Manager** — Download sample packs to study and modify, then upload your own packs for analysis. Full validation of pack structure before upload.
+- **Visual Dashboard** — Interactive charts (Recharts) showing impact distribution, action priorities, and performance KPIs.
+- **Dynamic Pack Discovery** — Health endpoint now lists all packs on disk, including user-uploaded packs.
+
 ## Project Structure
 
 ```
@@ -69,6 +78,9 @@ pnpm dev
 │   │   ├── api/analyze/            # POST /api/analyze — run pipeline
 │   │   ├── api/selfcheck/          # POST /api/selfcheck — validate digest
 │   │   ├── api/health/             # GET /api/health — health check
+│   │   ├── api/logs/               # GET/POST /api/logs — Gemini logger
+│   │   ├── api/packs/download/     # GET /api/packs/download — download pack
+│   │   ├── api/packs/upload/       # POST /api/packs/upload — upload pack
 │   │   ├── packs/[id]/             # Pack detail page
 │   │   ├── reports/[id]/           # Report viewer (static + dynamic)
 │   │   ├── docs/                   # Documentation page
@@ -76,9 +88,12 @@ pnpm dev
 │   ├── components/                 # React components (shadcn/ui based)
 │   │   └── ui/                     # shadcn/ui primitives
 │   ├── hooks/                      # Custom React hooks
+│   │   ├── gemini-logger.tsx       # Gemini API log viewer with toggle
+│   │   ├── pack-manager.tsx        # Pack upload/download manager
 │   ├── lib/
 │   │   ├── server/                 # Backend-only logic
 │   │   │   ├── gemini.ts           # Gemini API integration
+│   │   │   ├── gemini-logger.ts    # In-memory Gemini call logger
 │   │   │   ├── pipeline.ts         # Demo & live pipeline orchestration
 │   │   │   ├── diff.ts             # Unified diff computation
 │   │   │   └── rate-limit.ts       # In-memory rate limiter + budget cap

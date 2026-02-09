@@ -1,0 +1,18 @@
+id: education_policy_en
+name: "Education Policy Updates (EN)"
+description: "Analyzes changes in school board policies, curriculum updates, and education regulations."
+languages:
+  - en
+tags:
+  - education
+  - school-board
+  - curriculum
+  - policy
+safety_policy: "Do not include personally identifiable student information. Flag any policy changes affecting minors with appropriate sensitivity."
+output_constraints:
+  max_executive_summary_words: 60
+  max_what_changed_items: 7
+  max_deadlines: 7
+  max_action_items: 7
+  max_risk_flags: 5
+  max_evidence_per_item: 5
