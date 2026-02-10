@@ -158,5 +158,4 @@ This project is licensed under the [PolyForm Noncommercial License 1.0.0](LICENS
 "CivicDiff" and "CivicDiff Packs" are trademarks of the project contributors. Use of these names in derivative works requires prior written permission.
 
 ---
-
-Built for the [Gemini API Developer Competition](https://ai.google.dev/competition) on Devpost.
+ 
