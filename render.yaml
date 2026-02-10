@@ -3,13 +3,17 @@ services:
     name: civicdiff-packs
     runtime: node
     plan: free
-    buildCommand: npm install -g pnpm && pnpm install --frozen-lockfile && pnpm build
-    startCommand: pnpm start
+    buildCommand: npm install -g pnpm && pnpm install --frozen-lockfile && pnpm build && cp -r .next/static .next/standalone/.next/static && cp -r public .next/standalone/public && cp -r packs .next/standalone/packs && cp registry.json .next/standalone/
+    startCommand: node .next/standalone/server.js
     envVars:
       - key: NODE_ENV
         value: production
       - key: NEXT_TELEMETRY_DISABLED
         value: "1"
+      - key: PORT
+        value: "10000"
+      - key: HOSTNAME
+        value: "0.0.0.0"
       - key: GEMINI_API_KEY
         sync: false
       - key: GEMINI_MODEL
