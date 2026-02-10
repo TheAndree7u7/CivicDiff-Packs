@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: civicdiff-packs
+    runtime: node
+    plan: free
+    buildCommand: npm install -g pnpm && pnpm install --frozen-lockfile && pnpm build
+    startCommand: pnpm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-2.5-flash-lite
+      - key: THINKING_LEVEL
+        value: medium
+      - key: RATE_LIMIT_LIVE_RPM
+        value: "5"
+      - key: RATE_LIMIT_DEMO_RPM
+        value: "20"
+      - key: MAX_LIVE_CALLS_PER_HOUR
+        value: "50"

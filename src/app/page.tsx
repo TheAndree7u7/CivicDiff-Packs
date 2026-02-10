@@ -23,7 +23,6 @@ import { PackHealthOverview } from "@/components/pack-health-overview"
 import { QuickActions, ModeBanner } from "@/components/quick-actions"
 import { ImpactBreakdown } from "@/components/impact-breakdown"
 import { PackManager } from "@/components/pack-manager"
-import { GeminiLogger } from "@/components/gemini-logger"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
@@ -88,7 +87,7 @@ export default function HomePage() {
       <SiteHeader />
       <main className="flex-1">
         {/* Hero */}
-        <section className="relative overflow-hidden border-b">
+        <section id="hero" className="relative overflow-hidden border-b">
           <div className="absolute inset-0 bg-gradient-to-br from-accent/8 via-background to-chart-3/8" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-accent/15 via-transparent to-transparent" />
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-accent/5 rounded-full blur-3xl" />
@@ -123,10 +122,10 @@ export default function HomePage() {
                   </Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="gap-2 h-12 px-6 text-sm bg-transparent">
-                  <Link href="/about">
+                  <a href="#how-it-works">
                     <FileStack className="h-4 w-4" />
                     How It Works
-                  </Link>
+                  </a>
                 </Button>
               </div>
               <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2.5">
@@ -142,7 +141,7 @@ export default function HomePage() {
         </section>
 
         {/* Use Cases */}
-        <section className="border-b bg-muted/10">
+        <section id="use-cases" className="border-b bg-muted/10">
           <div className="mx-auto max-w-7xl px-4 py-10 lg:px-6 lg:py-14">
             <div className="grid gap-4 sm:grid-cols-3">
               {useCases.map((uc) => (
@@ -166,7 +165,7 @@ export default function HomePage() {
         </section>
 
         {/* Features */}
-        <section className="border-b bg-muted/20">
+        <section id="how-it-works" className="border-b bg-muted/20 scroll-mt-16">
           <div className="mx-auto max-w-7xl px-4 py-12 lg:px-6 lg:py-16">
             <div className="mb-8 text-center">
               <Badge variant="outline" className="mb-3 gap-1.5 px-3 py-1 text-xs text-muted-foreground border-muted-foreground/20">
@@ -201,7 +200,7 @@ export default function HomePage() {
         </section>
 
         {/* Dashboard Section */}
-        <section className="border-b bg-muted/30">
+        <section id="dashboard" className="border-b bg-muted/30 scroll-mt-16">
           <div className="mx-auto max-w-7xl px-4 py-8 lg:px-6 lg:py-10">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
               <div>
@@ -223,12 +222,12 @@ export default function HomePage() {
         </section>
 
         {/* Stats row */}
-        <section className="mx-auto max-w-7xl px-4 -mt-5 lg:px-6 relative z-10">
+        <section id="stats" className="mx-auto max-w-7xl px-4 -mt-5 lg:px-6 relative z-10">
           <DashboardStats packs={packs} reports={reports} />
         </section>
 
         {/* Main dashboard content */}
-        <section className="mx-auto max-w-7xl px-4 py-8 lg:px-6">
+        <section id="packs" className="mx-auto max-w-7xl px-4 py-8 lg:px-6 scroll-mt-16">
           <div className="flex flex-col gap-8 lg:flex-row">
             {/* Left: Pack grid + Activity */}
             <div className="flex-1 space-y-8">
@@ -246,10 +245,6 @@ export default function HomePage() {
             </aside>
           </div>
 
-          {/* Gemini Logger Section */}
-          <div className="mt-8">
-            <GeminiLogger />
-          </div>
         </section>
       </main>
       <SiteFooter />
